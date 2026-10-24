@@ -9,6 +9,8 @@ export const SITE = {
   telegramHandle: '@SquadUp_cyber',
   operator: 'Молчанова Д. Д.',
   policyDate: '24 октября 2026 г.',
+  // Сайт размещён на GitHub Pages, обработчик формы — на сервере Timeweb за api.squadup.ru
+  subscribeUrl: 'https://api.squadup.ru/api/subscribe',
 };
 
 export const NAV = [

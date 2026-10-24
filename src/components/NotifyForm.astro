@@ -6,7 +6,7 @@ const { place, compact = false } = Astro.props;
 const uid = `nf-${place}`;
 ---
 <div class:list={['nf', { 'nf--compact': compact }]} data-sq-block={`notify-${place}`}>
-  <form class="nf__form" data-notify-form data-place={place} novalidate>
+  <form class="nf__form" data-notify-form data-place={place} data-url={SITE.subscribeUrl} novalidate>
     <label for={`${uid}-email`} class="visually-hidden">Email</label>
     <div class="nf__row">
       <input id={`${uid}-email`} name="email" type="email" inputmode="email" autocomplete="email" required
@@ -50,11 +50,16 @@ const uid = `nf-${place}`;
       if (!fd.get('consent')) { msg.textContent = 'Отметьте согласие на обработку email.'; msg.classList.add('is-err'); return; }
       btn.disabled = true; btn.textContent = 'Отправляем…';
       try {
-        const res = await fetch('/api/subscribe', {
+        // text/plain — «простой» запрос без предварительного CORS-запроса OPTIONS
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 12000);
+        const res = await fetch(form.dataset.url || '/api/subscribe', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          signal: ctrl.signal,
           body: JSON.stringify({ email, consent: true, company: fd.get('company') || '', place: form.dataset.place, page: location.pathname }),
         });
+        clearTimeout(timer);
         if (!res.ok) throw new Error(String(res.status));
         track('subscribe', { place: form.dataset.place || '' });
         form.hidden = true;
