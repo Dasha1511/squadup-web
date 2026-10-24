@@ -13,11 +13,11 @@ find "$DIR/dist" -type d -exec chmod 755 {} +
 find "$DIR/dist" -type f -exec chmod 644 {} +
 
 echo "== 2. nginx: отдельный файл squadup-site"
-cp "$DIR/deploy/nginx-squadup.conf" /etc/nginx/sites-available/squadup-site
-# Если сертификат для squadup.ru уже выпущен — сохраняем HTTPS-настройку certbot, не перезаписываем её
-if [ -f /etc/letsencrypt/live/squadup.ru/fullchain.pem ] && [ -f /etc/nginx/sites-enabled/squadup-site ] && grep -q "managed by Certbot" /etc/nginx/sites-enabled/squadup-site 2>/dev/null; then
-  echo "   HTTPS уже настроен — конфигурацию nginx не меняю"
+# Certbot дописывает HTTPS прямо в этот файл — если он уже там, файл не перезаписываем
+if grep -q "managed by Certbot" /etc/nginx/sites-available/squadup-site 2>/dev/null; then
+  echo "   HTTPS уже настроен certbot — конфигурацию nginx не меняю"
 else
+  cp "$DIR/deploy/nginx-squadup.conf" /etc/nginx/sites-available/squadup-site
   ln -sf /etc/nginx/sites-available/squadup-site /etc/nginx/sites-enabled/squadup-site
 fi
 nginx -t
