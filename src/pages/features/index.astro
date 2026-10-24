@@ -1,0 +1,88 @@
+---
+import { Users, Heart, Filter, Shield, UserPlus, Link2, Trophy, GitBranch, Timer, Coins, Wallet, BarChart3 } from '@lucide/astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import PhoneFrame from '../../components/PhoneFrame.astro';
+import CtaSection from '../../components/CtaSection.astro';
+
+const blocks = [
+  {
+    id: 'teammates', caps: 'Поиск тиммейтов', title: 'Лента игроков вместо поиска в чатах',
+    text: 'Карточки игроков с рангом, винрейтом, KDA, мейнами и временем, когда человек обычно играет. Ник скрыт до взаимного лайка — никакого спама.',
+    img: '/screens/feed.webp',
+    items: [
+      { icon: Filter, t: 'Фильтры по игре, роли, рангу и региону' },
+      { icon: Heart, t: 'Взаимный лайк — мэтч, ник и контакты открываются' },
+      { icon: BarChart3, t: 'Реальная статистика из OpenDota, Leetify и Riot API' },
+    ],
+  },
+  {
+    id: 'teams', caps: 'Команды', title: 'Состав под турнир за пару минут',
+    text: 'Капитан создаёт команду, зовёт игроков по ссылке и принимает заявки. Не хватает человека — команда открывает роль и попадает в список «Команды ищут игроков».',
+    img: '/screens/team.webp',
+    items: [
+      { icon: Link2, t: 'Приглашение по ссылке' },
+      { icon: UserPlus, t: 'Заявки игроков и открытые роли' },
+      { icon: Shield, t: 'Основной состав из 5 игроков и до 2 запасных' },
+    ],
+  },
+  {
+    id: 'tournaments', caps: 'Турниры', title: 'Свой турнир за четыре шага',
+    text: 'Организатор выбирает игру, формат, регион и допустимые ранги, вносит призовой фонд — и турнир появляется в каталоге. Сетка строится автоматически.',
+    img: '/screens/tournament.webp',
+    items: [
+      { icon: GitBranch, t: 'Single Elimination, Double Elimination и Round Robin' },
+      { icon: Timer, t: 'Чек-ин перед стартом и результаты по картам' },
+      { icon: Trophy, t: 'Отдельный матч за третье место в Single Elimination' },
+    ],
+  },
+  {
+    id: 'prizes', caps: 'Призы', title: 'Прозрачные призы в рублях',
+    text: 'Фонд от 3 000 до 1 000 000 ₽ вносится до старта. После финала он делится между тремя местами, а в команде — между игроками.',
+    img: '/screens/results.webp',
+    items: [
+      { icon: Coins, t: 'Распределение 60 / 30 / 10%' },
+      { icon: Wallet, t: 'Выплата через СБП или на карту, налог удерживает Squadup' },
+      { icon: Users, t: 'Доля каждого игрока видна в итогах турнира' },
+    ],
+  },
+];
+---
+<Base title="Возможности" description="Поиск тиммейтов, команды, турниры и призы в Squadup: что умеет приложение для игроков и организаторов Dota 2, LoL и CS2.">
+  <PageHero caps="Возможности" title="Одно приложение — от дуо до турнира" block="features-hero"
+            lead="Squadup закрывает весь путь игрока: найти людей, собрать состав и сыграть на призовой фонд." />
+
+  {blocks.map((b, i) => (
+    <section class:list={['section feat-row', { 'feat-row--rev': i % 2 === 1 }]} id={b.id} data-sq-block={`features-${b.id}`}>
+      <div class="wrap feat-row__in">
+        <div class="reveal">
+          <span class="caps">{b.caps}</span>
+          <h2 class="h2">{b.title}</h2>
+          <p class="lead">{b.text}</p>
+          <ul class="feat-list">
+            {b.items.map((it) => <li><span class="icon-tile"><it.icon size={20} stroke-width={1.5} /></span>{it.t}</li>)}
+          </ul>
+        </div>
+        <div class="feat-row__img reveal"><PhoneFrame src={b.img} alt={`Squadup: ${b.caps.toLowerCase()}`} eager={i === 0} /></div>
+      </div>
+    </section>
+  ))}
+
+  <CtaSection place="features" />
+</Base>
+
+<style>
+  .feat-row__in { display: grid; grid-template-columns: 1.2fr .8fr; gap: 64px; align-items: center; }
+  .feat-row--rev .feat-row__in > :first-child { order: 2; }
+  .feat-row__img { display: flex; justify-content: center; }
+  .feat-row__img :global(.phone) { max-width: 280px; }
+  .feat-list { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-direction: column; gap: 14px; }
+  .feat-list li { display: flex; align-items: center; gap: 14px; color: #d5dae3; }
+  .feat-list .icon-tile { width: 40px; height: 40px; border-radius: 12px; flex: none; }
+  .feat-row + .feat-row { padding-top: 0; }
+  @media (max-width: 860px) {
+    .feat-row__in { grid-template-columns: 1fr; gap: 40px; }
+    .feat-row--rev .feat-row__in > :first-child { order: 0; }
+    .feat-row__img :global(.phone) { max-width: 240px; }
+  }
+</style>

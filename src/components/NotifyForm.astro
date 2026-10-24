@@ -1,0 +1,100 @@
+---
+import { Send, Check } from '@lucide/astro';
+import { SITE, EVENTS } from '../config/site';
+interface Props { place: string; compact?: boolean }
+const { place, compact = false } = Astro.props;
+const uid = `nf-${place}`;
+---
+<div class:list={['nf', { 'nf--compact': compact }]} data-sq-block={`notify-${place}`}>
+  <form class="nf__form" data-notify-form data-place={place} novalidate>
+    <label for={`${uid}-email`} class="visually-hidden">Email</label>
+    <div class="nf__row">
+      <input id={`${uid}-email`} name="email" type="email" inputmode="email" autocomplete="email" required
+             placeholder="Ваш email" class="nf__input" maxlength="254" />
+      <button type="submit" class="btn btn--primary nf__submit">Узнать о запуске</button>
+    </div>
+    <!-- Поле-ловушка для ботов -->
+    <input type="text" name="company" tabindex="-1" autocomplete="off" class="nf__trap" aria-hidden="true" />
+    <label class="nf__consent">
+      <input type="checkbox" name="consent" required />
+      <span>Даю согласие на обработку email, чтобы получить письмо о запуске Squadup, согласно{' '}
+        <a href="/privacy/" target="_blank">политике конфиденциальности</a></span>
+    </label>
+    <p class="nf__msg" role="status" aria-live="polite"></p>
+  </form>
+
+  <div class="nf__done" hidden>
+    <span class="nf__check"><Check size={20} stroke-width={2} /></span>
+    <div>
+      <p class="nf__done-title">Готово! Напишем, как только приложение выйдет.</p>
+      <p class="muted">А пока следите за новостями в канале.</p>
+    </div>
+  </div>
+
+  <a href={SITE.telegram} target="_blank" rel="noopener" class="nf__tg" data-track={EVENTS.telegram} data-track-place={place}>
+    <Send size={18} stroke-width={1.5} /> Новости в Telegram — {SITE.telegramHandle}
+  </a>
+</div>
+
+<script>
+  import { track } from '../scripts/analytics';
+  document.querySelectorAll<HTMLFormElement>('[data-notify-form]').forEach((form) => {
+    const msg = form.querySelector<HTMLElement>('.nf__msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('.nf__submit')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const email = String(fd.get('email') || '').trim();
+      msg.className = 'nf__msg';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { msg.textContent = 'Проверьте email — похоже, в нём ошибка.'; msg.classList.add('is-err'); return; }
+      if (!fd.get('consent')) { msg.textContent = 'Отметьте согласие на обработку email.'; msg.classList.add('is-err'); return; }
+      btn.disabled = true; btn.textContent = 'Отправляем…';
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, consent: true, company: fd.get('company') || '', place: form.dataset.place, page: location.pathname }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        track('subscribe', { place: form.dataset.place || '' });
+        form.hidden = true;
+        const done = form.parentElement?.querySelector<HTMLElement>('.nf__done');
+        if (done) done.hidden = false;
+      } catch {
+        msg.textContent = 'Не получилось отправить. Попробуйте ещё раз чуть позже или подпишитесь на Telegram-канал.';
+        msg.classList.add('is-err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Узнать о запуске';
+      }
+    });
+  });
+</script>
+
+<style>
+  .nf { width: 100%; max-width: 560px; }
+  .nf__row { display: flex; gap: 10px; }
+  .nf__input {
+    flex: 1; min-width: 0; height: 52px; padding: 0 16px; border-radius: var(--r-btn);
+    background: var(--bg); border: 1px solid var(--border); color: var(--text); font: inherit;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .nf__input::placeholder { color: var(--icon); }
+  .nf__input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 92, 255, .25); }
+  .nf__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .nf__consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; font-size: 13px; line-height: 18px; color: var(--text-2); cursor: pointer; }
+  .nf__consent input { margin: 1px 0 0; width: 18px; height: 18px; accent-color: var(--primary); flex: none; }
+  .nf__consent a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 2px; }
+  .nf__msg { margin: 10px 0 0; min-height: 20px; font-size: 14px; }
+  .nf__msg.is-err { color: var(--error); }
+  .nf__done { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: var(--r-tile); background: rgba(43, 214, 123, .08); border: 1px solid rgba(43, 214, 123, .25); }
+  .nf__done[hidden] { display: none; }
+  .nf__done p { margin: 0; }
+  .nf__done-title { font-weight: 600; }
+  .nf__check { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--success); color: #062312; flex: none; }
+  .nf__tg { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 15px; font-weight: 500; color: var(--cyan); }
+  .nf__tg:hover { text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 560px) {
+    .nf__row { flex-direction: column; }
+    .nf__submit { width: 100%; }
+  }
+</style>

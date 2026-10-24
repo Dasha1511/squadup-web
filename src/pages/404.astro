@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Страница не найдена" noindex>
+  <section class="section nf404" data-sq-block="404">
+    <div class="glow-bg"></div>
+    <div class="wrap rel">
+      <span class="caps">Ошибка 404</span>
+      <h1 class="h1" style="margin-top:14px">Такой страницы нет</h1>
+      <p class="lead">Возможно, ссылка устарела. Начните с главной — там всё о Squadup.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+        <a href="/" class="btn btn--primary">На главную</a>
+        <a href="/faq/" class="btn btn--ghost">Частые вопросы</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>.nf404 { min-height: 60vh; overflow: hidden; }</style>

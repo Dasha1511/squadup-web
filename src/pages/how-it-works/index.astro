@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import PhoneFrame from '../../components/PhoneFrame.astro';
+import CtaSection from '../../components/CtaSection.astro';
+
+const player = [
+  { title: 'Регистрация', text: 'Аккаунт по email и паролю. Username выбирается один раз — по нему тебя найдут капитаны.' },
+  { title: 'Игровые аккаунты', text: 'Добавь Dota 2, LoL или CS2: укажи Steam ID или Riot ID, роли и удобное время игры. Ранг и статистика подтянутся автоматически.' },
+  { title: 'Лента и мэтчи', text: 'Свайпай карточки. Если лайк взаимный — мэтч: ник открывается, и вы видите контакты друг друга для связи.' },
+  { title: 'Команда', text: 'Создай команду или подай заявку туда, где ищут твою роль. Капитан подтверждает состав.' },
+  { title: 'Турнир', text: 'Зарегистрируй команду, пройди чек-ин и играй матчи сетки. Счёт по картам вносится после матча.' },
+  { title: 'Приз', text: 'Займёте место в тройке — доля приза каждого игрока появится в итогах. Получить её можно через СБП или на карту.' },
+];
+
+const organizer = [
+  { title: 'Профиль организатора', text: 'Включается в настройках. Без него турнир создать нельзя.' },
+  { title: 'Параметры', text: 'Игра, регион, допустимые ранги, число команд, формат сетки и время старта.' },
+  { title: 'Призовой фонд', text: 'От 3 000 до 1 000 000 ₽. Оплачивается в веб-кабинете через СБП или картой до публикации турнира.' },
+  { title: 'Проведение', text: 'Чек-ин, сетка, подтверждение результатов. Если турнир отменён — фонд возвращается тем же способом, которым был оплачен.' },
+];
+---
+<Base title="Как это работает" description="Как пользоваться Squadup: от регистрации и поиска тиммейтов до участия в турнире и получения приза. Отдельно — путь организатора турнира.">
+  <PageHero caps="Как это работает" title="Путь игрока и организатора" block="how-hero"
+            lead="Два сценария: ты ищешь команду и турниры — или проводишь свой турнир с призовым фондом." />
+
+  <section class="section" id="player" data-sq-block="how-player">
+    <div class="wrap how">
+      <div class="how__phones reveal" aria-hidden="true">
+        <PhoneFrame src="/screens/feed.webp" alt="" eager />
+      </div>
+      <div>
+        <div class="section-head reveal" style="margin-bottom:32px">
+          <span class="caps">Для игрока</span>
+          <h2 class="h2">Шесть шагов от регистрации до приза</h2>
+        </div>
+        <ol class="tl">
+          {player.map((s, i) => (
+            <li class="tl__item reveal"><span class="tl__dot">{i + 1}</span><div><h3 class="h3">{s.title}</h3><p class="muted">{s.text}</p></div></li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="organizer" data-sq-block="how-organizer">
+    <div class="wrap how how--rev">
+      <div>
+        <div class="section-head reveal" style="margin-bottom:32px">
+          <span class="caps">Для организатора</span>
+          <h2 class="h2">Свой турнир без таблиц и чатов</h2>
+        </div>
+        <ol class="tl">
+          {organizer.map((s, i) => (
+            <li class="tl__item reveal"><span class="tl__dot tl__dot--cyan">{i + 1}</span><div><h3 class="h3">{s.title}</h3><p class="muted">{s.text}</p></div></li>
+          ))}
+        </ol>
+      </div>
+      <div class="how__phones reveal" aria-hidden="true">
+        <PhoneFrame src="/screens/tournaments.webp" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <CtaSection place="how" />
+</Base>
+
+<style>
+  .how { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+  .how--rev { grid-template-columns: 1.2fr .8fr; }
+  .how__phones { position: sticky; top: 110px; display: flex; justify-content: center; }
+  .how__phones :global(.phone) { max-width: 280px; }
+  .tl { list-style: none; margin: 0; padding: 0; position: relative; }
+  .tl::before { content: ''; position: absolute; left: 19px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--primary), transparent); opacity: .5; }
+  .tl__item { position: relative; display: grid; grid-template-columns: 40px 1fr; gap: 20px; padding-bottom: 28px; }
+  .tl__item p { margin: 6px 0 0; }
+  .tl__dot {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; z-index: 1;
+    background: var(--bg); border: 2px solid var(--primary); color: #c9bdff; box-shadow: 0 0 16px rgba(124, 92, 255, .35);
+  }
+  .tl__dot--cyan { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 16px rgba(34, 211, 238, .3); }
+  @media (max-width: 860px) {
+    .how, .how--rev { grid-template-columns: 1fr; gap: 32px; }
+    .how__phones { position: static; display: none; }
+  }
+</style>

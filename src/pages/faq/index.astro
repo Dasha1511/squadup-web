@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import { FAQ } from '../../config/faq';
+import { SITE, EVENTS } from '../../config/site';
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base title="Частые вопросы" description="Ответы на частые вопросы о Squadup: запуск приложения, стоимость, игры, мэтчи, команды, турниры, призы и выплаты.">
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} slot="head" />
+  <PageHero caps="FAQ" title="Частые вопросы" block="faq-hero"
+            lead="Не нашли ответ — напишите нам в Telegram или на почту." />
+
+  <section class="section section--tight" data-sq-block="faq-page">
+    <div class="wrap faqp">
+      <FaqList />
+      <aside class="card faqp__aside">
+        <h2 class="h3">Остался вопрос?</h2>
+        <p class="muted">Пишите в Telegram или на почту — ответим лично.</p>
+        <a href={SITE.telegram} target="_blank" rel="noopener" class="btn btn--primary btn--sm" data-track={EVENTS.telegram} data-track-place="faq-aside">Telegram</a>
+        <a href={`mailto:${SITE.email}`} class="btn btn--ghost btn--sm" data-track={EVENTS.emailClick} data-track-place="faq-aside">Написать на почту</a>
+      </aside>
+    </div>
+  </section>
+
+  <CtaSection place="faq" />
+</Base>
+
+<style>
+  .faqp { display: grid; grid-template-columns: 1fr 300px; gap: 32px; align-items: start; }
+  .faqp__aside { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 12px; }
+  .faqp__aside p { margin: 0 0 8px; }
+  @media (max-width: 860px) { .faqp { grid-template-columns: 1fr; } .faqp__aside { position: static; } }
+</style>

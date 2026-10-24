@@ -1,0 +1,80 @@
+---
+import { Check } from '@lucide/astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import { GAMES } from '../../config/games';
+---
+<Base title="Поддерживаемые игры" description="Squadup поддерживает Dota 2, League of Legends и Counter-Strike 2: роли, ранги, статистика и турниры 5 на 5.">
+  <PageHero caps="Игры" title="Dota 2, League of Legends и CS2" block="games-hero"
+            lead="Для каждой игры — свои роли, ранги и регионы. Фильтры турниров тоже учитывают особенности дисциплины." />
+
+  <section class="section section--tight" data-sq-block="games-list">
+    <div class="wrap games">
+      {GAMES.map((g) => (
+        <article class="gm reveal" id={g.slug} style={`--from:${g.from};--to:${g.to};--tone:${g.tone}`} data-sq-block={`games-${g.slug}`}>
+          <div class="gm__cover">
+            <span class="gm__code">{g.code}</span>
+            <h2 class="gm__name">{g.name}</h2>
+            <p class="gm__text">{g.text}</p>
+          </div>
+          <div class="gm__body">
+            <dl class="gm__facts">
+              <div><dt>Формат</dt><dd>{g.format}</dd></div>
+              <div><dt>Аккаунт</dt><dd>{g.account}</dd></div>
+              <div><dt>Статистика</dt><dd>{g.stats}</dd></div>
+            </dl>
+            <p class="caps gm__roles-title">Роли</p>
+            <ul class="gm__roles">{g.roles.map((r) => <li><Check size={14} stroke-width={2} />{r}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--tight" data-sq-block="games-next">
+    <div class="wrap">
+      <div class="card next reveal">
+        <h2 class="h3">Нет вашей игры?</h2>
+        <p class="muted">Напишите, какую дисциплину добавить следующей, — мы собираем запросы в <a href="/contacts/">контактах</a> и Telegram-канале.</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaSection place="games" />
+</Base>
+
+<style>
+  .games { display: flex; flex-direction: column; gap: 24px; }
+  .gm {
+    display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--r-sheet); overflow: hidden;
+    border: 1px solid var(--border); background: var(--surface); scroll-margin-top: 96px;
+  }
+  .gm__cover {
+    position: relative; padding: 36px; min-height: 280px; display: flex; flex-direction: column; justify-content: flex-end;
+    background: linear-gradient(145deg, var(--from), var(--to));
+  }
+  .gm__cover::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 14px); }
+  .gm__cover > * { position: relative; z-index: 1; }
+  .gm__cover > .gm__code { position: absolute; }
+  .gm__code { position: absolute; top: 28px; left: 36px; padding: 8px 12px; border-radius: 12px; background: rgba(0,0,0,.35); font-weight: 700; color: var(--tone); }
+  .gm__name { margin: 0; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; letter-spacing: -0.02em; }
+  .gm__text { margin: 12px 0 0; color: rgba(255,255,255,.82); max-width: 420px; }
+  .gm__body { padding: 36px; }
+  .gm__facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
+  .gm__facts div { padding: 14px; border-radius: 14px; background: var(--surface-2); }
+  .gm__facts dt { font-size: 12px; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
+  .gm__facts dd { margin: 4px 0 0; font-weight: 600; }
+  .gm__roles-title { margin: 28px 0 12px; color: var(--text-2); }
+  .gm__roles { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .gm__roles li { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); font-size: 14px; }
+  .gm__roles svg { color: var(--tone); }
+  .next a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 3px; }
+  .next p { margin: 8px 0 0; }
+  @media (max-width: 860px) {
+    .gm { grid-template-columns: 1fr; }
+    .gm__cover, .gm__body { padding: 28px 22px; }
+    .gm__code { left: 22px; }
+    .gm__facts { grid-template-columns: 1fr; }
+  }
+</style>

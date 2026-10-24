@@ -1,0 +1,87 @@
+---
+import { Send, Mail } from '@lucide/astro';
+import Logo from './Logo.astro';
+import { SITE, NAV, EVENTS } from '../config/site';
+const year = new Date().getFullYear();
+---
+<footer class="ftr" data-sq-block="footer">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <Logo size={36} />
+        <p class="muted">Тиммейты и турниры по Dota&nbsp;2, LoL и CS2.</p>
+        <div class="ftr__social">
+          <a href={SITE.telegram} target="_blank" rel="noopener" class="ftr__icon" aria-label="Telegram-канал Squadup"
+             data-track={EVENTS.telegram} data-track-place="footer"><Send size={18} stroke-width={1.5} /></a>
+          <a href={`mailto:${SITE.email}`} class="ftr__icon" aria-label="Написать на почту"
+             data-track={EVENTS.emailClick} data-track-place="footer"><Mail size={18} stroke-width={1.5} /></a>
+        </div>
+      </div>
+
+      <nav class="ftr__col" aria-label="Разделы">
+        <span class="caps">Разделы</span>
+        <a href="/">Главная</a>
+        {NAV.map((i) => <a href={i.href}>{i.label}</a>)}
+        <a href="/download/">Скачать</a>
+      </nav>
+
+      <nav class="ftr__col" aria-label="Документы">
+        <span class="caps">Документы</span>
+        <a href="/privacy/">Политика конфиденциальности</a>
+        <a href="/cookies/">Политика cookies</a>
+        <button type="button" class="ftr__linkbtn" data-open-consent>Настройки cookies</button>
+      </nav>
+    </div>
+
+    <div class="ftr__bottom">
+      <span class="muted">© {year} Squadup. Приложение готовится к выпуску.</span>
+
+      <!-- Информеры счётчиков статистики: появляются после согласия на аналитические cookies -->
+      <div class="ftr__counters" aria-label="Счётчики статистики">
+        <span class="counter-slot" data-counter="liveinternet" hidden>
+          <a href="https://www.liveinternet.ru/click" target="_blank" rel="noopener">
+            <img id="licnt" width="88" height="31" style="border:0" alt="LiveInternet"
+                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7" />
+          </a>
+        </span>
+        <span class="counter-slot" data-counter="rambler" hidden><span id="top100_widget"></span></span>
+        <span class="counter-slot" data-counter="mytracker" hidden></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { border-top: 1px solid var(--border); background: #090c11; padding: 56px 0 28px; margin-top: 40px; }
+  .ftr__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+  .ftr__brand p { margin: 16px 0 20px; max-width: 280px; }
+  .ftr__social { display: flex; gap: 10px; }
+  .ftr__icon {
+    width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-2); transition: color .15s, border-color .15s;
+  }
+  .ftr__icon:hover { color: var(--text); border-color: #39414f; }
+  .ftr__col { display: flex; flex-direction: column; gap: 12px; }
+  .ftr__col .caps { color: var(--text-2); margin-bottom: 4px; }
+  .ftr__col a, .ftr__linkbtn { color: #c3cad6; font-size: 15px; transition: color .15s; }
+  .ftr__col a:hover, .ftr__linkbtn:hover { color: var(--text); }
+  .ftr__linkbtn { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+  .ftr__bottom {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+    margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 14px;
+  }
+  .ftr__counters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 31px; }
+  .counter-slot { display: inline-flex; line-height: 0; }
+  .ftr :global(.mt-badge) {
+    display: inline-flex; align-items: center; gap: 6px; width: 88px; height: 31px; padding: 0 7px;
+    border-radius: 6px; background: var(--surface); border: 1px solid #39414f; line-height: 1;
+  }
+  .ftr :global(.mt-badge__dot) { width: 9px; height: 9px; border-radius: 50%; background: #ff5a1f; flex: none; box-shadow: 0 0 6px rgba(255,90,31,.6); }
+  .ftr :global(.mt-badge__txt) { display: flex; flex-direction: column; gap: 2px; }
+  .ftr :global(.mt-badge__txt b) { font-size: 10px; font-weight: 700; color: var(--text); }
+  .ftr :global(.mt-badge__txt small) { font-size: 8.5px; color: var(--text-2); }
+  @media (max-width: 760px) {
+    .ftr__top { grid-template-columns: 1fr 1fr; }
+    .ftr__brand { grid-column: 1 / -1; }
+  }
+</style>

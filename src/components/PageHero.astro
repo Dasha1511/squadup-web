@@ -1,0 +1,18 @@
+---
+interface Props { caps: string; title: string; lead?: string; block: string }
+const { caps, title, lead, block } = Astro.props;
+---
+<section class="page-hero" data-sq-block={block}>
+  <div class="glow-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="wrap rel">
+    <span class="caps">{caps}</span>
+    <h1 class="h1 ph__title">{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .ph__title { font-size: clamp(36px, 5vw, 56px); margin-top: 14px; }
+</style>

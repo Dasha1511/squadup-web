@@ -1,0 +1,87 @@
+---
+import { Menu, X } from '@lucide/astro';
+import Logo from './Logo.astro';
+import { NAV, EVENTS } from '../config/site';
+const path = Astro.url.pathname;
+---
+<header class="hdr" data-sq-block="header">
+  <div class="wrap hdr__in">
+    <a href="/" class="hdr__logo" aria-label="Squadup — на главную"><Logo size={34} /></a>
+
+    <nav class="hdr__nav" aria-label="Основное меню">
+      {NAV.map((i) => (
+        <a href={i.href} class:list={['hdr__link', { 'is-active': path.startsWith(i.href) }]}>{i.label}</a>
+      ))}
+    </nav>
+
+    <a href="/download/" class="btn btn--primary btn--sm hdr__cta" data-track={EVENTS.notifyClick} data-track-place="header">
+      Скачать
+    </a>
+
+    <button class="hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+      <Menu class="i-open" size={24} stroke-width={1.5} />
+      <X class="i-close" size={24} stroke-width={1.5} />
+    </button>
+  </div>
+
+  <div class="mnav" id="mobile-menu" hidden>
+    <nav class="wrap mnav__in" aria-label="Мобильное меню">
+      {NAV.map((i) => <a href={i.href} class="mnav__link">{i.label}</a>)}
+      <a href="/download/" class="btn btn--primary" data-track={EVENTS.notifyClick} data-track-place="mobile-menu">Скачать приложение</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.hdr__burger');
+  const menu = document.getElementById('mobile-menu');
+  const hdr = document.querySelector('.hdr');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    if (menu) menu.hidden = !open;
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  const onScroll = () => hdr?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .hdr {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(11, 14, 20, .72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent; transition: border-color .2s, background .2s;
+  }
+  .hdr.is-scrolled { border-bottom-color: var(--border); background: rgba(11, 14, 20, .9); }
+  .hdr__in { display: flex; align-items: center; gap: 24px; height: 72px; }
+  .hdr__logo { flex: none; }
+  .hdr__nav { display: flex; gap: 4px; margin-left: auto; }
+  .hdr__link {
+    padding: 8px 14px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--text-2);
+    transition: color .15s, background .15s;
+  }
+  .hdr__link:hover { color: var(--text); background: var(--surface); }
+  .hdr__link.is-active { color: var(--text); }
+  .hdr__cta { flex: none; }
+  .hdr__burger {
+    display: none; margin-left: auto; width: 44px; height: 44px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--border); cursor: pointer; place-items: center;
+  }
+  .hdr__burger .i-close { display: none; }
+  .hdr__burger[aria-expanded='true'] .i-open { display: none; }
+  .hdr__burger[aria-expanded='true'] .i-close { display: block; }
+
+  .mnav { position: fixed; inset: 72px 0 0; background: var(--bg); border-top: 1px solid var(--border); overflow-y: auto; }
+  .mnav__in { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; padding-bottom: 32px; }
+  .mnav__link { padding: 16px 4px; font-size: 20px; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .mnav .btn { margin-top: 24px; }
+
+  @media (max-width: 900px) {
+    .hdr__nav, .hdr__cta { display: none; }
+    .hdr__burger { display: grid; }
+    .hdr__in { height: 64px; }
+    .mnav { inset: 64px 0 0; }
+  }
+</style>

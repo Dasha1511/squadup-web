@@ -1,0 +1,32 @@
+---
+import { Smartphone, Apple } from '@lucide/astro';
+import { EVENTS } from '../config/site';
+interface Props { place: string; target?: string }
+const { place, target = '/download/#notify' } = Astro.props;
+---
+<div class="stores" data-sq-block={`stores-${place}`}>
+  <a href={target} class="store" data-track={EVENTS.storeAndroid} data-track-place={place}
+     aria-label="Android — скоро в Google Play. Узнать о запуске">
+    <Smartphone size={26} stroke-width={1.5} />
+    <span><small>Скоро в Google Play</small><b>Android</b></span>
+  </a>
+  <a href={target} class="store" data-track={EVENTS.storeIos} data-track-place={place}
+     aria-label="iPhone — скоро в App Store. Узнать о запуске">
+    <Apple size={26} stroke-width={1.5} />
+    <span><small>Скоро в App Store</small><b>iPhone</b></span>
+  </a>
+</div>
+
+<style>
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .store {
+    display: inline-flex; align-items: center; gap: 12px; min-width: 196px; height: 60px; padding: 0 20px;
+    border-radius: var(--r-btn); background: #000; border: 1px solid #2c3340;
+    transition: border-color .15s, transform .15s;
+  }
+  .store:hover { border-color: var(--primary); transform: translateY(-1px); }
+  .store span { display: flex; flex-direction: column; line-height: 1.15; }
+  .store small { font-size: 12px; color: var(--text-2); }
+  .store b { font-size: 18px; font-weight: 600; }
+  @media (max-width: 480px) { .store { flex: 1; min-width: 0; } }
+</style>

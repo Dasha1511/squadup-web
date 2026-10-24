@@ -1,0 +1,20 @@
+# /etc/systemd/system/squadup-subscribe.service
+# Обработчик формы подписки. Адреса хранятся в /var/lib/squadup-subscribe/subscribers.jsonl
+
+[Unit]
+Description=Squadup site: subscribe form handler
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Environment=SUB_HOST=127.0.0.1
+Environment=SUB_PORT=8787
+Environment=SUB_DATA_DIR=/var/lib/squadup-subscribe
+ExecStart=/usr/bin/node /var/www/squadup-web/server/subscribe-server.mjs
+Restart=on-failure
+StateDirectory=squadup-subscribe
+StateDirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

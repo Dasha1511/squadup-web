@@ -1,0 +1,30 @@
+---
+import { ChevronDown } from '@lucide/astro';
+import { FAQ } from '../config/faq';
+import { EVENTS } from '../config/site';
+interface Props { ids?: string[] }
+const { ids } = Astro.props;
+const items = ids ? FAQ.filter((f) => ids.includes(f.id)) : FAQ;
+---
+<div class="faq" data-sq-block="faq-list">
+  {items.map((f) => (
+    <details class="faq__item" id={`faq-${f.id}`} data-track-open={EVENTS.faqOpen} data-sq-block={`faq-${f.id}`}>
+      <summary><span>{f.q}</span><ChevronDown size={20} stroke-width={1.5} class="faq__chev" /></summary>
+      <p>{f.a}</p>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq { display: flex; flex-direction: column; gap: 10px; }
+  .faq__item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); transition: border-color .15s; }
+  .faq__item[open] { border-color: rgba(124, 92, 255, .4); }
+  .faq__item summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 20px 22px; font-weight: 600; font-size: 17px;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__chev { flex: none; color: var(--text-2); transition: transform .2s; }
+  .faq__item[open] .faq__chev { transform: rotate(180deg); color: var(--primary); }
+  .faq__item p { margin: 0; padding: 0 22px 22px; color: var(--text-2); max-width: 760px; }
+</style>

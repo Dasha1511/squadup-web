@@ -1,0 +1,54 @@
+---
+import { Bell, Send, Smartphone } from '@lucide/astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import PhoneFrame from '../../components/PhoneFrame.astro';
+import StoreButtons from '../../components/StoreButtons.astro';
+import NotifyForm from '../../components/NotifyForm.astro';
+import { SITE, EVENTS } from '../../config/site';
+---
+<Base title="Скачать приложение" description="Squadup скоро появится в Google Play и App Store. Оставьте email или подпишитесь на Telegram, чтобы узнать о запуске первыми.">
+  <PageHero caps="Android и iOS" title="Squadup скоро в магазинах приложений" block="download-hero"
+            lead="Приложение проходит подготовку к публикации. Ссылки на скачивание появятся здесь в день релиза.">
+    <div class="dl-stores"><StoreButtons place="download" target="#notify" /></div>
+  </PageHero>
+
+  <section class="section section--tight" id="notify" data-sq-block="download-notify">
+    <div class="wrap dl2">
+      <div class="dl2__card card reveal">
+        <span class="icon-tile"><Bell size={24} stroke-width={1.5} /></span>
+        <h2 class="h2">Предварительная регистрация</h2>
+        <p class="lead">Оставьте email — пришлём одно письмо со ссылками на Google Play и App Store, когда приложение выйдет.</p>
+        <div class="dl2__form"><NotifyForm place="download" /></div>
+      </div>
+      <div class="dl2__side">
+        <div class="card reveal">
+          <span class="icon-tile icon-tile--cyan"><Send size={22} stroke-width={1.5} /></span>
+          <h3 class="h3" style="margin-top:16px">Telegram-канал</h3>
+          <p class="muted">Новости разработки, даты бета-теста и первые турниры.</p>
+          <a href={SITE.telegram} target="_blank" rel="noopener" class="btn btn--ghost btn--sm"
+             data-track={EVENTS.telegram} data-track-place="download-card">Открыть {SITE.telegramHandle}</a>
+        </div>
+        <div class="card reveal">
+          <span class="icon-tile icon-tile--green"><Smartphone size={22} stroke-width={1.5} /></span>
+          <h3 class="h3" style="margin-top:16px">Системные требования</h3>
+          <p class="muted">Смартфон на Android или iPhone с актуальной версией системы и доступом в интернет. Точные версии укажем на страницах в магазинах.</p>
+        </div>
+        <div class="dl2__phone reveal" aria-hidden="true"><PhoneFrame src="/screens/results.webp" alt="" /></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .dl-stores { margin-top: 32px; }
+  .dl2 { display: grid; grid-template-columns: 1.3fr .7fr; gap: 24px; align-items: start; }
+  .dl2__card { padding: 40px; }
+  .dl2__card .h2 { margin-top: 20px; }
+  .dl2__form { margin-top: 28px; }
+  .dl2__side { display: flex; flex-direction: column; gap: 20px; }
+  .dl2__side .btn { margin-top: 16px; }
+  .dl2__side p { margin: 8px 0 0; }
+  .dl2__phone { display: none; }
+  @media (max-width: 860px) { .dl2 { grid-template-columns: 1fr; } .dl2__card { padding: 28px 22px; } }
+</style>

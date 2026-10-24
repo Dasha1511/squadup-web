@@ -1,0 +1,40 @@
+---
+import NotifyForm from './NotifyForm.astro';
+import PhoneFrame from './PhoneFrame.astro';
+interface Props { place: string; id?: string }
+const { place, id = 'notify' } = Astro.props;
+---
+<section class="section cta-sec" id={id} data-sq-block={`cta-${place}`}>
+  <div class="wrap">
+    <div class="cta reveal">
+      <div class="grid-lines"></div>
+      <div class="cta__body rel">
+        <span class="caps">Предварительная регистрация</span>
+        <h2 class="h2">Узнайте о запуске первыми</h2>
+        <p class="lead">Оставьте email — пришлём одно письмо, когда Squadup появится в Google Play и App Store. Никакой рассылки.</p>
+        <div class="cta__form"><NotifyForm place={place} /></div>
+      </div>
+      <div class="cta__phone rel" aria-hidden="true">
+        <PhoneFrame src="/screens/match.webp" alt="" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative; overflow: hidden; border-radius: 32px; padding: 56px;
+    display: grid; grid-template-columns: 1.3fr .7fr; gap: 40px; align-items: center;
+    background:
+      radial-gradient(600px 360px at 0% 0%, rgba(124, 92, 255, .35), transparent 70%),
+      radial-gradient(500px 300px at 100% 100%, rgba(34, 211, 238, .18), transparent 70%),
+      var(--surface);
+    border: 1px solid rgba(124, 92, 255, .3);
+  }
+  .cta__form { margin-top: 28px; }
+  .cta__phone { justify-self: center; width: 240px; margin-bottom: -140px; transform: rotate(4deg); }
+  @media (max-width: 860px) {
+    .cta { grid-template-columns: 1fr; padding: 36px 24px; }
+    .cta__phone { display: none; }
+  }
+</style>

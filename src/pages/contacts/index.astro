@@ -1,0 +1,53 @@
+---
+import { Mail, Send, Handshake, Bug } from '@lucide/astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { SITE, EVENTS } from '../../config/site';
+---
+<Base title="Контакты" description="Контакты команды Squadup: email и Telegram-канал. Вопросы о приложении, турнирах и сотрудничестве.">
+  <PageHero caps="Контакты" title="Связаться с Squadup" block="contacts-hero"
+            lead="Вопросы о приложении, идеи для турниров, сотрудничество с организаторами и стримерами — пишите." />
+
+  <section class="section section--tight" data-sq-block="contacts">
+    <div class="wrap grid-2">
+      <a href={`mailto:${SITE.email}`} class="card ct reveal" data-track={EVENTS.emailClick} data-track-place="contacts">
+        <span class="icon-tile"><Mail size={24} stroke-width={1.5} /></span>
+        <span class="caps" style="color:var(--text-2)">Email</span>
+        <span class="ct__val">{SITE.email}</span>
+        <span class="muted">Общие вопросы, обращения по персональным данным</span>
+      </a>
+      <a href={SITE.telegram} target="_blank" rel="noopener" class="card ct reveal" data-track={EVENTS.telegram} data-track-place="contacts">
+        <span class="icon-tile icon-tile--cyan"><Send size={24} stroke-width={1.5} /></span>
+        <span class="caps" style="color:var(--text-2)">Telegram-канал</span>
+        <span class="ct__val">{SITE.telegramHandle}</span>
+        <span class="muted">Новости запуска и анонсы турниров</span>
+      </a>
+    </div>
+
+    <div class="wrap grid-2" style="margin-top:20px">
+      <div class="card reveal">
+        <span class="icon-tile icon-tile--gold"><Handshake size={22} stroke-width={1.5} /></span>
+        <h2 class="h3" style="margin-top:16px">Организаторам и сообществам</h2>
+        <p class="muted">Проводите турниры или ведёте игровое сообщество? Расскажите о себе — подключим к запуску одними из первых.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon-tile icon-tile--green"><Bug size={22} stroke-width={1.5} /></span>
+        <h2 class="h3" style="margin-top:16px">Нашли ошибку на сайте?</h2>
+        <p class="muted">Пришлите адрес страницы и скриншот на почту — исправим.</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="muted owner reveal">Владелец сайта и оператор персональных данных: {SITE.operator}. Адрес сайта: squadup.ru.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ct { display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, transform .15s; }
+  .ct:hover { border-color: rgba(124, 92, 255, .5); transform: translateY(-2px); }
+  .ct .icon-tile { margin-bottom: 8px; }
+  .ct__val { font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; word-break: break-all; }
+  .card p { margin: 8px 0 0; }
+  .owner { margin-top: 32px; font-size: 14px; }
+</style>

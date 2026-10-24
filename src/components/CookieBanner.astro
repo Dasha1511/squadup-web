@@ -1,0 +1,48 @@
+---
+import { Cookie } from '@lucide/astro';
+---
+<div class="cb" id="cookie-banner" role="dialog" aria-modal="false" aria-labelledby="cb-title" hidden>
+  <div class="cb__in">
+    <div class="cb__icon"><Cookie size={22} stroke-width={1.5} /></div>
+    <div class="cb__text">
+      <p class="cb__title" id="cb-title">Cookies и статистика посещений</p>
+      <p class="cb__desc">
+        Сайт работает без аналитических cookies. С вашего согласия мы подключим счётчики LiveInternet,
+        Рамблер/топ-100 и MyTracker — они помогают понять, какие разделы полезны. Подробнее — в{' '}
+        <a href="/cookies/">политике cookies</a>.
+      </p>
+    </div>
+    <div class="cb__actions">
+      <button type="button" class="btn btn--ghost btn--sm" data-consent="denied">Отклонить</button>
+      <button type="button" class="btn btn--primary btn--sm" data-consent="granted">Принять</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cb {
+    position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 80;
+    display: flex; justify-content: center; pointer-events: none;
+  }
+  .cb[hidden] { display: none; }
+  .cb__in {
+    pointer-events: auto; width: 100%; max-width: 880px;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center;
+    padding: 18px 20px; border-radius: 20px; background: rgba(21, 26, 35, .96);
+    border: 1px solid var(--border); box-shadow: 0 16px 48px rgba(0, 0, 0, .5);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .cb__icon {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(124, 92, 255, .14); color: #a996ff;
+  }
+  .cb__title { margin: 0; font-weight: 600; }
+  .cb__desc { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--text-2); }
+  .cb__desc a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 2px; }
+  .cb__actions { display: flex; gap: 8px; }
+  @media (max-width: 720px) {
+    .cb__in { grid-template-columns: 1fr; }
+    .cb__icon { display: none; }
+    .cb__actions .btn { flex: 1; }
+  }
+</style>
