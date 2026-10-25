@@ -32,31 +32,40 @@ export function buildMessage({ fromName, from, to, replyTo, subject, html, text 
   return headers.join('\r\n') + '\r\n\r\n' + part('text/plain', text) + '\r\n' + part('text/html', html) + `\r\n--${boundary}--\r\n`;
 }
 
-export function sendMail({ host, port = 465, secure = true, user, pass, from, to, message, timeoutMs = 20000 }) {
+export function sendMail({ host, port = 465, secure = true, starttls = false, user, pass, from, to, message, timeoutMs = 20000 }) {
   return new Promise((resolve, reject) => {
-    const sock = secure ? tls.connect({ host, port, servername: host }) : net.connect({ host, port });
-    sock.setEncoding('utf8');
-    sock.setTimeout(timeoutMs, () => { sock.destroy(); reject(new Error('smtp timeout')); });
-    sock.on('error', reject);
+    const raw = secure ? tls.connect({ host, port, servername: host }) : net.connect({ host, port });
+    let active = raw;
+    raw.setTimeout(timeoutMs, () => { active.destroy(); reject(new Error('smtp timeout')); });
+    raw.on('error', reject);
 
     let buf = '';
     const queue = [];
-    sock.on('data', (chunk) => {
-      buf += chunk;
-      // ответ SMTP закончен, когда последняя строка вида «250 текст» (пробел после кода)
+    // ответ SMTP закончен, когда строка вида «250 текст» (пробел после кода)
+    const onData = (chunk) => {
+      buf += chunk.toString('utf8');
       const lines = buf.split('\r\n');
       buf = lines.pop();
-      for (const line of lines) {
-        if (/^\d{3} /.test(line)) { const w = queue.shift(); if (w) w(line); }
-        else if (!/^\d{3}-/.test(line)) { /* пустая строка */ }
-      }
-    });
+      for (const line of lines) if (/^\d{3} /.test(line)) { const w = queue.shift(); if (w) w(line); }
+    };
+    raw.on('data', onData);
     const expect = (codes) => new Promise((res, rej) => queue.push((line) => (codes.includes(+line.slice(0, 3)) ? res(line) : rej(new Error('smtp: ' + line)))));
-    const cmd = (line, codes) => { const p = expect(codes); sock.write(line + '\r\n'); return p; };
+    const cmd = (line, codes) => { const p = expect(codes); active.write(line + '\r\n'); return p; };
 
     (async () => {
       await expect([220]);
       await cmd('EHLO squadup.ru', [250]);
+      if (starttls) {
+        // Порт 587: переходим на шифрование командой STARTTLS
+        await cmd('STARTTLS', [220]);
+        raw.removeListener('data', onData);
+        const s = tls.connect({ socket: raw, servername: host });
+        await new Promise((r, j) => { s.once('secureConnect', r); s.once('error', j); });
+        s.on('data', onData);
+        s.on('error', reject);
+        active = s;
+        await cmd('EHLO squadup.ru', [250]);
+      }
       await cmd('AUTH LOGIN', [334]);
       await cmd(b64(user), [334]);
       await cmd(b64(pass), [235]);
@@ -66,8 +75,8 @@ export function sendMail({ host, port = 465, secure = true, user, pass, from, to
       const body = message.replace(/\r\n\./g, '\r\n..');
       await cmd(body + '\r\n.', [250]);
       await cmd('QUIT', [221]).catch(() => {});
-      sock.end();
+      active.end();
       resolve();
-    })().catch((e) => { sock.destroy(); reject(e); });
+    })().catch((e) => { active.destroy(); reject(e); });
   });
 }

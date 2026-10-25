@@ -21,7 +21,8 @@ export async function sendWelcome(to) {
   await sendMail({
     host: process.env.MAIL_HOST || 'smtp.gmail.com',
     port: Number(process.env.MAIL_PORT || 465),
-    secure: process.env.MAIL_SECURE !== 'false',
+    secure: (process.env.MAIL_PORT || '465') === '465' && process.env.MAIL_SECURE !== 'false',
+    starttls: process.env.MAIL_PORT === '587',
     user,
     pass: String(process.env.MAIL_PASS).replace(/\s+/g, ''),
     from: user,

@@ -7,12 +7,17 @@ DIR=/var/www/squadup-web
 ENV=/etc/squadup-subscribe.env
 USER_MAIL=hello.squadup@gmail.com
 
-echo "== Проверяю, что сервер может подключиться к Gmail (порт 465)…"
-if ! timeout 8 bash -c 'cat < /dev/null > /dev/tcp/smtp.gmail.com/465' 2>/dev/null; then
-  echo "!! Порт 465 закрыт. Пришлите этот текст Claude — настроим порт 587."
+echo "== Проверяю, может ли сервер подключиться к Gmail…"
+PORT=""
+for P in 465 587; do
+  if timeout 8 bash -c "cat < /dev/null > /dev/tcp/smtp.gmail.com/$P" 2>/dev/null; then PORT=$P; break; fi
+  echo "   порт $P закрыт"
+done
+if [ -z "$PORT" ]; then
+  echo "!! Хостинг закрыл почтовые порты 465 и 587. Их открывает поддержка Timeweb по запросу (текст запроса даст Claude)."
   exit 1
 fi
-echo "   подключение есть"
+echo "   порт $PORT открыт"
 
 read -r -s -p "Вставьте пароль приложения Gmail и нажмите Enter: " PASS; echo
 PASS=$(printf '%s' "$PASS" | tr -d ' ')
@@ -23,6 +28,7 @@ cat > "$ENV" <<EOF
 MAIL_USER=$USER_MAIL
 MAIL_PASS=$PASS
 MAIL_FROM_NAME=Squadup
+MAIL_PORT=$PORT
 EOF
 chmod 600 "$ENV"
 
