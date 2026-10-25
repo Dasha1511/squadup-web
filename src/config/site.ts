@@ -8,7 +8,11 @@ export const SITE = {
   telegram: 'https://t.me/SquadUp_cyber',
   telegramHandle: '@SquadUp_cyber',
   operator: 'Молчанова Д. Д.',
-  policyDate: '24 октября 2026 г.',
+  // Город владельца сайта (ст. 10 149-ФЗ: место нахождения владельца сайта)
+  ownerCity: '',
+  policyDate: '25 октября 2026 г.',
+  // Версия текстов согласий в форме — сохраняется вместе с подпиской
+  consentVersion: '2026-10-25',
   // Сайт размещён на GitHub Pages, обработчик формы — на сервере Timeweb за api.squadup.ru
   subscribeUrl: 'https://api.squadup.ru/api/subscribe',
 };
@@ -17,7 +21,7 @@ export const NAV = [
   { href: '/features/', label: 'Возможности' },
   { href: '/how-it-works/', label: 'Как это работает' },
   { href: '/games/', label: 'Игры' },
-  { href: '/faq/', label: 'FAQ' },
+  { href: '/faq/', label: 'Вопросы' },
   { href: '/contacts/', label: 'Контакты' },
 ];
 
@@ -59,3 +63,6 @@ export const EVENTS = {
   faqOpen: 'faqopen', // открыл вопрос FAQ
   emailClick: 'emailclick', // нажал на email в контактах
 } as const;
+
+/** Строка о владельце сайта (ст. 10 149-ФЗ), всегда заканчивается точкой. */
+export const OWNER_LINE = SITE.ownerCity ? `${SITE.operator}, ${SITE.ownerCity}.` : SITE.operator;

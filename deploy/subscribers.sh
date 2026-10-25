@@ -10,8 +10,8 @@ if [ "$1" = "csv" ]; then
   OUT=/root/subscribers-$(date +%F).csv
   node -e '
     const rows = require("fs").readFileSync(process.argv[1], "utf8").trim().split("\n").map(JSON.parse);
-    console.log("﻿email;дата_подписки;откуда");
-    for (const r of rows) console.log([r.email, r.created_at, r.page].join(";"));
+    console.log("﻿email;дата_подписки;согласие_на_рассылки;откуда");
+    for (const r of rows) console.log([r.email, r.created_at, r.marketing ? "да" : "нет", r.page].join(";"));
   ' "$FILE" > "$OUT"
   echo "Сохранено в $OUT"
   exit 0
@@ -20,6 +20,6 @@ fi
 node -e '
   const rows = require("fs").readFileSync(process.argv[1], "utf8").trim().split("\n").map(JSON.parse);
   const fmt = (iso) => new Date(iso).toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
-  rows.forEach((r, i) => console.log(String(i + 1).padStart(3) + ". " + r.email.padEnd(36) + fmt(r.created_at) + "   " + (r.page || "")));
+  rows.forEach((r, i) => console.log(String(i + 1).padStart(3) + ". " + r.email.padEnd(36) + fmt(r.created_at) + "   рассылки: " + (r.marketing ? "да " : "нет") + "   " + (r.page || "")));
   console.log("\nВсего подписчиков: " + rows.length);
 ' "$FILE"

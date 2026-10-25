@@ -1,7 +1,7 @@
 ---
 import { Send, Mail } from '@lucide/astro';
 import Logo from './Logo.astro';
-import { SITE, NAV, EVENTS } from '../config/site';
+import { SITE, NAV, EVENTS, OWNER_LINE } from '../config/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ftr" data-sq-block="footer">
@@ -28,13 +28,18 @@ const year = new Date().getFullYear();
       <nav class="ftr__col" aria-label="Документы">
         <span class="caps">Документы</span>
         <a href="/privacy/">Политика конфиденциальности</a>
+        <a href="/consent/">Согласие на обработку данных</a>
         <a href="/cookies/">Политика cookies</a>
         <button type="button" class="ftr__linkbtn" data-open-consent>Настройки cookies</button>
       </nav>
     </div>
 
     <div class="ftr__bottom">
-      <span class="muted">© {year} SquadUp. Приложение готовится к выпуску.</span>
+      <div class="ftr__legal muted">
+        <span>© {year} SquadUp. Приложение готовится к выпуску.</span>
+        <span>Владелец сайта: {OWNER_LINE} Почта для обращений, в том числе заявлений правообладателей: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></span>
+        <span>Dota 2 и Counter-Strike 2 — товарные знаки Valve Corporation, League of Legends — товарный знак Riot Games, Inc. SquadUp не связан с этими компаниями.</span>
+      </div>
 
       <!-- Информеры счётчиков статистики: появляются после согласия на аналитические cookies -->
       <div class="ftr__counters" aria-label="Счётчики статистики">
@@ -52,6 +57,8 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  .ftr__legal { display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 19px; max-width: 760px; min-width: 0; }
+  .ftr__legal a { color: var(--text-2); text-decoration: underline; text-underline-offset: 2px; }
   .ftr { border-top: 1px solid var(--border); background: #090c11; padding: 56px 0 28px; margin-top: 40px; }
   .ftr__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
   .ftr__brand p { margin: 16px 0 20px; max-width: 280px; }

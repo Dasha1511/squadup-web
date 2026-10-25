@@ -7,18 +7,22 @@ const uid = `nf-${place}`;
 ---
 <div class:list={['nf', { 'nf--compact': compact }]} data-sq-block={`notify-${place}`}>
   <form class="nf__form" data-notify-form data-place={place} data-url={SITE.subscribeUrl} novalidate>
-    <label for={`${uid}-email`} class="visually-hidden">Email</label>
+    <label for={`${uid}-email`} class="visually-hidden">Электронная почта</label>
     <div class="nf__row">
       <input id={`${uid}-email`} name="email" type="email" inputmode="email" autocomplete="email" required
-             placeholder="Ваш email" class="nf__input" maxlength="254" />
+             placeholder="Ваша почта" class="nf__input" maxlength="254" />
       <button type="submit" class="btn btn--primary nf__submit">Узнать о запуске</button>
     </div>
     <!-- Поле-ловушка для ботов -->
     <input type="text" name="company" tabindex="-1" autocomplete="off" class="nf__trap" aria-hidden="true" />
     <label class="nf__consent">
       <input type="checkbox" name="consent" required />
-      <span>Даю согласие на обработку email, чтобы получить письмо о запуске SquadUp, согласно{' '}
-        <a href="/privacy/" target="_blank">политике конфиденциальности</a></span>
+      <span>Даю <a href="/consent/" target="_blank">согласие на обработку персональных данных</a>{' '}
+        и ознакомлен(а) с <a href="/privacy/" target="_blank">политикой конфиденциальности</a>. Обязательно</span>
+    </label>
+    <label class="nf__consent">
+      <input type="checkbox" name="marketing" />
+      <span>Согласен(на) получать новости и рекламные рассылки SquadUp на эту почту. Можно отписаться в любой момент. Необязательно</span>
     </label>
     <p class="nf__msg" role="status" aria-live="polite"></p>
   </form>
@@ -38,7 +42,7 @@ const uid = `nf-${place}`;
 
 <script>
   import { track } from '../scripts/analytics';
-  const BAD_EMAIL = 'Email введён некорректно. Проверьте адрес, например: name@mail.ru';
+  const BAD_EMAIL = 'Адрес почты введён некорректно. Проверьте его, например: name@mail.ru';
   document.querySelectorAll<HTMLFormElement>('[data-notify-form]').forEach((form) => {
     const msg = form.querySelector<HTMLElement>('.nf__msg')!;
     const btn = form.querySelector<HTMLButtonElement>('.nf__submit')!;
@@ -48,9 +52,9 @@ const uid = `nf-${place}`;
       const email = String(fd.get('email') || '').trim();
       msg.className = 'nf__msg';
       const show = (text: string, kind: 'err' | 'info' = 'err') => { msg.textContent = text; msg.classList.add(kind === 'err' ? 'is-err' : 'is-info'); };
-      if (!email) { show('Введите email.'); return; }
+      if (!email) { show('Введите адрес почты.'); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { show(BAD_EMAIL); return; }
-      if (!fd.get('consent')) { show('Отметьте согласие на обработку email.'); return; }
+      if (!fd.get('consent')) { show('Отметьте согласие на обработку персональных данных — без него мы не можем сохранить почту.'); return; }
       btn.disabled = true; btn.textContent = 'Отправляем…';
       try {
         // text/plain — «простой» запрос без предварительного CORS-запроса OPTIONS
@@ -60,7 +64,7 @@ const uid = `nf-${place}`;
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
           signal: ctrl.signal,
-          body: JSON.stringify({ email, consent: true, company: fd.get('company') || '', place: form.dataset.place, page: location.pathname }),
+          body: JSON.stringify({ email, consent: true, marketing: Boolean(fd.get('marketing')), company: fd.get('company') || '', place: form.dataset.place, page: location.pathname }),
         });
         clearTimeout(timer);
         if (!res.ok) {
@@ -96,7 +100,7 @@ const uid = `nf-${place}`;
   .nf__input::placeholder { color: var(--icon); }
   .nf__input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 92, 255, .25); }
   .nf__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-  .nf__consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; font-size: 13px; line-height: 18px; color: var(--text-2); cursor: pointer; }
+  .nf__consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 13px; line-height: 18px; color: var(--text-2); cursor: pointer; }
   .nf__consent input { margin: 1px 0 0; width: 18px; height: 18px; accent-color: var(--primary); flex: none; }
   .nf__consent a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 2px; }
   .nf__msg { margin: 10px 0 0; min-height: 20px; font-size: 14px; }

@@ -2,9 +2,9 @@
 import { Mail, Send, Handshake, Bug } from '@lucide/astro';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import { SITE, EVENTS } from '../../config/site';
+import { SITE, EVENTS, OWNER_LINE } from '../../config/site';
 ---
-<Base title="Контакты" description="Контакты команды SquadUp: email и Telegram-канал. Вопросы о приложении, турнирах и сотрудничестве.">
+<Base title="Контакты" description="Контакты команды SquadUp: почта и Telegram-канал. Вопросы о приложении, турнирах и сотрудничестве.">
   <PageHero caps="Контакты" title="Связаться с SquadUp" block="contacts-hero"
             lead="Вопросы о приложении, идеи для турниров, сотрудничество с организаторами и стримерами — пишите." />
 
@@ -12,7 +12,7 @@ import { SITE, EVENTS } from '../../config/site';
     <div class="wrap grid-2">
       <a href={`mailto:${SITE.email}`} class="card ct reveal" data-track={EVENTS.emailClick} data-track-place="contacts">
         <span class="icon-tile"><Mail size={24} stroke-width={1.5} /></span>
-        <span class="caps" style="color:var(--text-2)">Email</span>
+        <span class="caps" style="color:var(--text-2)">Почта</span>
         <span class="ct__val">{SITE.email}</span>
         <span class="muted">Общие вопросы, обращения по персональным данным</span>
       </a>
@@ -37,10 +37,14 @@ import { SITE, EVENTS } from '../../config/site';
       </div>
     </div>
 
+    <div class="wrap">
+      <p class="muted owner reveal">Владелец сайта: {OWNER_LINE} Почта для обращений, в том числе заявлений правообладателей: {SITE.email}.</p>
+    </div>
   </section>
 </Base>
 
 <style>
+  .owner { margin-top: 32px; font-size: 14px; }
   .ct { display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, transform .15s; }
   .ct:hover { border-color: rgba(124, 92, 255, .5); transform: translateY(-2px); }
   .ct .icon-tile { margin-bottom: 8px; }

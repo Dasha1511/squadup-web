@@ -7,7 +7,7 @@ import StoreButtons from '../../components/StoreButtons.astro';
 import NotifyForm from '../../components/NotifyForm.astro';
 import { SITE, EVENTS } from '../../config/site';
 ---
-<Base title="Скачать приложение" description="SquadUp скоро появится в Google Play и App Store. Оставьте email или подпишитесь на Telegram, чтобы узнать о запуске первыми.">
+<Base title="Скачать приложение" description="SquadUp скоро появится в Google Play и App Store. Оставьте почту или подпишитесь на Telegram, чтобы узнать о запуске первыми.">
   <PageHero caps="Android и iOS" title="SquadUp скоро в магазинах приложений" block="download-hero"
             lead="Приложение проходит подготовку к публикации. Ссылки на скачивание появятся здесь в день релиза.">
     <div class="dl-stores"><StoreButtons place="download" target="#notify" /></div>
@@ -18,7 +18,7 @@ import { SITE, EVENTS } from '../../config/site';
       <div class="dl2__card card reveal">
         <span class="icon-tile"><Bell size={24} stroke-width={1.5} /></span>
         <h2 class="h2">Предварительная регистрация</h2>
-        <p class="lead">Оставьте email — пришлём одно письмо со ссылками на Google Play и App Store, когда приложение выйдет.</p>
+        <p class="lead">Оставьте почту — пришлём письмо со ссылками на Google Play и App Store, когда приложение выйдет.</p>
         <div class="dl2__form"><NotifyForm place="download" /></div>
       </div>
       <div class="dl2__side">

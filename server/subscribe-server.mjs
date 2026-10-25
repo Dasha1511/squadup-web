@@ -107,9 +107,13 @@ const server = http.createServer((req, res) => {
     const row = {
       email,
       consent: true,
-      consent_text_version: '2026-10-24',
+      marketing: data.marketing === true,
+      consent_text_version: '2026-10-25',
       place: String(data.place || '').slice(0, 40),
       page: String(data.page || '').slice(0, 120),
+      // для подтверждения факта согласия
+      ip,
+      user_agent: String(req.headers['user-agent'] || '').slice(0, 200),
       created_at: new Date().toISOString(),
     };
     fs.appendFileSync(FILE, JSON.stringify(row) + '\n', { mode: 0o600 });
