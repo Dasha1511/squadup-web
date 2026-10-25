@@ -31,11 +31,11 @@ export const NAV = [
  */
 export const ANALYTICS = {
   // LiveInternet (ЛР №3): счётчик привязан к домену, ID не нужен.
-  // type — вид счётчика из генератора кода LiveInternet (фрагмент "hit?t52.6").
+  // type — вид счётчика из генератора кода LiveInternet (фрагмент "hit?t52.5", серый 88×31).
   liveinternet: {
     enabled: true,
-    type: 't52.6',
-    title: 'LiveInternet: показано число посетителей за сегодня',
+    type: 't52.5',
+    title: 'LiveInternet: показано число просмотров и посетителей за 24 часа',
   },
   // Рамблер/топ-100 (ЛР №4): номер проекта из кабинета top100.rambler.ru.
   rambler: {
