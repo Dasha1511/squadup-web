@@ -37,9 +37,9 @@ export const ANALYTICS = {
     type: 't52.5',
     title: 'LiveInternet: показано число просмотров и посетителей за 24 часа',
   },
-  // Рамблер/топ-100 (ЛР №4): номер проекта из кабинета top100.rambler.ru.
+  // Рамблер/топ-100 (ЛР №4): номер счётчика из кабинета Статистики SberAds (бывший top100.rambler.ru).
   rambler: {
-    projectId: '',
+    projectId: '7753231',
     // data-атрибут разметки блоков; должен совпадать с настройкой «Аналитика блоков» в кабинете
     blockAttribute: 'sq-block',
     trackHashes: true,

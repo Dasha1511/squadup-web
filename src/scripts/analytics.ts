@@ -81,6 +81,7 @@ function loadRambler() {
         element: 'top100_widget',
         trackHashes: cfg.rambler.trackHashes,
         attributes_dataset: [cfg.rambler.blockAttribute],
+        user_id: null,
       });
       flushRambler();
     } catch (e) { log('top100 init error', e); }
