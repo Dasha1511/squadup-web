@@ -5,6 +5,7 @@
 const FONT = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const TG = 'https://t.me/SquadUp_cyber';
 const SITE = 'https://squadup.ru';
+export const CONTACT = process.env.MAIL_CONTACT || 'SquadUp@gmail.com';
 
 export const SUBJECT = 'Вы в списке первых — Squadup';
 export const PREHEADER = 'Напишем одно письмо, когда Squadup выйдет в Google Play и App Store.';
@@ -51,7 +52,7 @@ ${inner}
 
 function footer({ color, link }) {
   return `<p style="margin:0 0 8px;font:13px/20px ${FONT};color:${color};">Вы получили это письмо, потому что оставили адрес на <a href="${SITE}" style="color:${link};">squadup.ru</a> и согласились получить уведомление о запуске. Больше писем не будет, кроме письма о выходе приложения.</p>
-<p style="margin:0;font:13px/20px ${FONT};color:${color};">Не хотите получать и его — ответьте на это письмо словом «Отписаться». Оператор: Молчанова Д. Д.</p>`;
+<p style="margin:0;font:13px/20px ${FONT};color:${color};">Не хотите получать и его — ответьте на это письмо словом «Отписаться». Вопросы: <a href="mailto:${CONTACT}" style="color:${link};">${CONTACT}</a> · <a href="${SITE}/privacy/" style="color:${link};">Политика конфиденциальности</a></p>`;
 }
 
 function button({ href, label, bg, color = '#ffffff' }) {
@@ -197,5 +198,5 @@ Squadup — поиск тиммейтов, команд и турниров в D
 
 Новости и дата запуска: ${TG}
 
-Вы получили это письмо, потому что оставили адрес на squadup.ru и согласились получить уведомление о запуске. Чтобы отписаться, ответьте на это письмо словом «Отписаться». Оператор: Молчанова Д. Д.`;
+Вы получили это письмо, потому что оставили адрес на squadup.ru и согласились получить уведомление о запуске. Чтобы отписаться, ответьте на это письмо словом «Отписаться». Вопросы: ${CONTACT}. Политика конфиденциальности: ${SITE}/privacy/`;
 }
