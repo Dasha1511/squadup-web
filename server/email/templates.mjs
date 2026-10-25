@@ -8,7 +8,7 @@ const SITE = 'https://squadup.ru';
 export const CONTACT = process.env.MAIL_CONTACT || 'hello.squadup@gmail.com';
 
 export const SUBJECT = 'Вы в списке первых — SquadUp';
-export const PREHEADER = 'Напишем одно письмо, когда SquadUp выйдет в Google Play и App Store.';
+export const PREHEADER = 'Напишем, когда SquadUp выйдет в Google Play и App Store.';
 
 const C = {
   bg: '#0b0e14', surface: '#151a23', surface2: '#1e242e', border: '#222834',
@@ -51,12 +51,12 @@ ${inner}
 }
 
 function footer({ color, link }) {
-  return `<p style="margin:0 0 8px;font:13px/20px ${FONT};color:${color};">Вы получили это письмо, потому что оставили адрес на <a href="${SITE}" style="color:${link};">squadup.ru</a> и согласились получить уведомление о запуске. Больше писем не будет, кроме письма о выходе приложения.</p>
-<p style="margin:0;font:13px/20px ${FONT};color:${color};">Не хотите получать и его — ответьте на это письмо словом «Отписаться». Вопросы: <a href="mailto:${CONTACT}" style="color:${link};">${CONTACT}</a> · <a href="${SITE}/privacy/" style="color:${link};">Политика конфиденциальности</a></p>`;
+  return `<p style="margin:0 0 8px;font:13px/20px ${FONT};color:${color};">Вы получили это письмо, потому что оставили адрес на <a href="${SITE}" style="color:${link};">squadup.ru</a> и согласились получить уведомление о запуске.</p>
+<p style="margin:0;font:13px/20px ${FONT};color:${color};">Чтобы отписаться, ответьте на это письмо словом «Отписаться». Вопросы: <a href="mailto:${CONTACT}" style="color:${link};">${CONTACT}</a> · <a href="${SITE}/privacy/" style="color:${link};">Политика конфиденциальности</a></p>`;
 }
 
-function button({ href, label, bg, color = '#ffffff' }) {
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+function button({ href, label, bg, color = '#ffffff', center = false }) {
+  return `<table role="presentation"${center ? ' align="center" style="margin:0 auto;"' : ''} cellpadding="0" cellspacing="0" border="0"><tr>
 <td align="center" bgcolor="${bg}" style="border-radius:14px;background:${bg};">
 <a href="${href}" style="display:inline-block;padding:15px 28px;font:600 16px/20px ${FONT};color:${color};border-radius:14px;">${label}</a>
 </td></tr></table>`;
@@ -90,7 +90,7 @@ export function variantA(asset) {
   </td></tr>
   <tr><td align="center" class="px" style="padding:22px 28px 0;">
     <h1 class="h1" style="margin:0;font:800 32px/38px ${FONT};color:${C.text};">Вы в списке <span style="color:#a48dff;">первых</span></h1>
-    <p style="margin:12px 0 0;font:15px/22px ${FONT};color:${C.text2};">Спасибо, что оставили почту. Как только SquadUp выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.</p>
+    <p style="margin:12px 0 0;font:15px/22px ${FONT};color:${C.text2};">Спасибо, что оставили почту. Как только SquadUp выйдет в Google Play и App Store, мы пришлём письмо со ссылками.</p>
   </td></tr>
   <tr><td class="px" style="padding:24px 28px 0;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${C.surface2}" style="background:${C.surface2};border-radius:16px;"><tr>
@@ -171,7 +171,7 @@ export function variantC(asset) {
 <tr><td bgcolor="${C.cyan}" style="background:${C.cyan};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
 <tr><td bgcolor="${paper}" class="px" style="background:${paper};padding:36px 40px 12px;border-left:1px solid ${line};border-right:1px solid ${line};">
   <h1 class="h1" style="margin:0;font:800 30px/36px ${FONT};color:${ink};">Готово, вы в списке!</h1>
-  <p style="margin:14px 0 0;font:16px/25px ${FONT};color:${muted};">Спасибо, что заглянули на squadup.ru. Мы пришлём одно письмо, когда приложение выйдет в Google Play и App Store. Вот что будет в приложении:</p>
+  <p style="margin:14px 0 0;font:16px/25px ${FONT};color:${muted};">Спасибо, что заглянули на squadup.ru. Мы напишем, когда приложение выйдет в Google Play и App Store. Вот что будет в приложении:</p>
 </td></tr>
 <tr><td bgcolor="${paper}" class="px" style="background:${paper};padding:20px 40px 8px;border-left:1px solid ${line};border-right:1px solid ${line};">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -181,8 +181,8 @@ export function variantC(asset) {
   </table>
 </td></tr>
 <tr><td bgcolor="${paper}" class="px" style="background:${paper};padding:4px 40px 36px;border-left:1px solid ${line};border-right:1px solid ${line};border-bottom:1px solid ${line};border-radius:0 0 20px 20px;">
-  ${button({ href: TG, label: 'Следить в Telegram', bg: violet })}
-  <p style="margin:16px 0 0;font:14px/20px ${FONT};color:${muted};">Или просто ответьте на это письмо — мы читаем всё.</p>
+  ${button({ href: TG, label: 'Следить в Telegram', bg: violet, center: true })}
+  <p style="margin:16px 0 0;font:14px/20px ${FONT};color:${muted};text-align:center;">Или просто ответьте на это письмо — мы читаем всё.</p>
 </td></tr>
 <tr><td class="px" style="padding:24px 12px 0;">${footer({ color: '#8a92a3', link: violet })}</td></tr>
 </table>`;
@@ -192,7 +192,7 @@ export function variantC(asset) {
 export function plainText() {
   return `Вы в списке первых!
 
-Спасибо, что оставили почту на squadup.ru. Когда SquadUp выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.
+Спасибо, что оставили почту на squadup.ru. Когда SquadUp выйдет в Google Play и App Store, мы пришлём письмо со ссылками.
 
 SquadUp — поиск тиммейтов, команд и турниров в Dota 2, League of Legends и CS2.
 
