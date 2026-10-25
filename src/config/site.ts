@@ -7,9 +7,9 @@ export const SITE = {
   email: 'hello.squadup@gmail.com',
   telegram: 'https://t.me/SquadUp_cyber',
   telegramHandle: '@SquadUp_cyber',
-  operator: 'Молчанова Д. Д.',
+  operator: 'Молчанова Дарья Дмитриевна',
   // Город владельца сайта (ст. 10 149-ФЗ: место нахождения владельца сайта)
-  ownerCity: '',
+  ownerCity: 'г. Москва',
   policyDate: '25 октября 2026 г.',
   // Версия текстов согласий в форме — сохраняется вместе с подпиской
   consentVersion: '2026-10-25',
@@ -65,4 +65,4 @@ export const EVENTS = {
 } as const;
 
 /** Строка о владельце сайта (ст. 10 149-ФЗ), всегда заканчивается точкой. */
-export const OWNER_LINE = SITE.ownerCity ? `${SITE.operator}, ${SITE.ownerCity}.` : SITE.operator;
+export const OWNER_LINE = SITE.ownerCity ? `${SITE.operator}, ${SITE.ownerCity}.` : `${SITE.operator}.`;
