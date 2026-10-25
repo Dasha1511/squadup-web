@@ -10,7 +10,7 @@ export const mailConfigured = () => Boolean(process.env.MAIL_USER && process.env
 export async function sendWelcome(to) {
   const user = process.env.MAIL_USER;
   const message = buildMessage({
-    fromName: process.env.MAIL_FROM_NAME || 'Squadup',
+    fromName: process.env.MAIL_FROM_NAME || 'SquadUp',
     from: user,
     to,
     replyTo: user,

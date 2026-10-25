@@ -17,7 +17,7 @@ const uid = `nf-${place}`;
     <input type="text" name="company" tabindex="-1" autocomplete="off" class="nf__trap" aria-hidden="true" />
     <label class="nf__consent">
       <input type="checkbox" name="consent" required />
-      <span>Даю согласие на обработку email, чтобы получить письмо о запуске Squadup, согласно{' '}
+      <span>Даю согласие на обработку email, чтобы получить письмо о запуске SquadUp, согласно{' '}
         <a href="/privacy/" target="_blank">политике конфиденциальности</a></span>
     </label>
     <p class="nf__msg" role="status" aria-live="polite"></p>
@@ -101,7 +101,7 @@ const uid = `nf-${place}`;
   .nf__consent a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 2px; }
   .nf__msg { margin: 10px 0 0; min-height: 20px; font-size: 14px; }
   .nf__msg.is-err { color: var(--error); }
-  .nf__msg.is-info { color: var(--cyan); }
+  .nf__msg.is-info { color: var(--success); }
   .nf__done { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: var(--r-tile); background: rgba(43, 214, 123, .08); border: 1px solid rgba(43, 214, 123, .25); }
   .nf__done[hidden] { display: none; }
   .nf__done p { margin: 0; }

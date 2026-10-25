@@ -1,4 +1,4 @@
-// Шаблоны письма-визитки Squadup (три варианта оформления).
+// Шаблоны письма-визитки SquadUp (три варианта оформления).
 // Табличная вёрстка и inline-стили — так письмо одинаково выглядит в Gmail, Mail.ru, Яндексе и Outlook.
 // asset(name) возвращает адрес картинки: в рассылке https://squadup.ru/email/<name>, в превью — data: URI.
 
@@ -7,8 +7,8 @@ const TG = 'https://t.me/SquadUp_cyber';
 const SITE = 'https://squadup.ru';
 export const CONTACT = process.env.MAIL_CONTACT || 'hello.squadup@gmail.com';
 
-export const SUBJECT = 'Вы в списке первых — Squadup';
-export const PREHEADER = 'Напишем одно письмо, когда Squadup выйдет в Google Play и App Store.';
+export const SUBJECT = 'Вы в списке первых — SquadUp';
+export const PREHEADER = 'Напишем одно письмо, когда SquadUp выйдет в Google Play и App Store.';
 
 const C = {
   bg: '#0b0e14', surface: '#151a23', surface2: '#1e242e', border: '#222834',
@@ -72,12 +72,12 @@ export function variantA(asset) {
 <div style="font:600 11px/14px ${FONT};letter-spacing:1px;text-transform:uppercase;color:${C.text2};">${label}</div>
 <div style="font:700 17px/22px ${FONT};color:${C.text};padding-top:4px;">${value}</div></td>`;
   const inner = `<table role="presentation" class="w" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;">
-<tr><td align="center" style="padding:0 0 24px;"><img src="${asset('logo.png')}" width="150" alt="Squadup" style="display:block;width:150px;height:auto;border:0;"></td></tr>
+<tr><td align="center" style="padding:0 0 24px;"><img src="${asset('logo.png')}" width="150" alt="SquadUp" style="display:block;width:150px;height:auto;border:0;"></td></tr>
 <tr><td bgcolor="${C.surface}" style="background:${C.surface};border:1px solid ${C.border};border-radius:24px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr><td class="px" style="padding:20px 28px 0;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td style="font:600 15px/20px ${FONT};color:${C.text};">Squadup</td>
+      <td style="font:600 15px/20px ${FONT};color:${C.text};">SquadUp</td>
       <td align="right"><span style="display:inline-block;padding:5px 12px;border-radius:999px;background:${C.surface2};border:1px solid ${C.border};font:600 12px/14px ${FONT};color:${C.text};"><span style="color:${C.success};">&#9679;</span>&nbsp; RU</span></td>
     </tr></table>
   </td></tr>
@@ -90,7 +90,7 @@ export function variantA(asset) {
   </td></tr>
   <tr><td align="center" class="px" style="padding:22px 28px 0;">
     <h1 class="h1" style="margin:0;font:800 32px/38px ${FONT};color:${C.text};">Вы в списке <span style="color:#a48dff;">первых</span></h1>
-    <p style="margin:12px 0 0;font:15px/22px ${FONT};color:${C.text2};">Спасибо, что оставили почту. Как только Squadup выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.</p>
+    <p style="margin:12px 0 0;font:15px/22px ${FONT};color:${C.text2};">Спасибо, что оставили почту. Как только SquadUp выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.</p>
   </td></tr>
   <tr><td class="px" style="padding:24px 28px 0;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${C.surface2}" style="background:${C.surface2};border-radius:16px;"><tr>
@@ -118,7 +118,7 @@ export function variantA(asset) {
   return shell({ title: SUBJECT, bodyBg: C.bg, inner, preheaderColor: C.bg });
 }
 
-// Вариант B — «Экраны приложения»: три скриншота показывают, что будет в Squadup.
+// Вариант B — «Экраны приложения»: три скриншота показывают, что будет в SquadUp.
 export function variantB(asset) {
   const shot = (img, title, text) => `<td class="stack shot" width="33%" valign="top" style="padding:0 6px;">
 <img src="${asset(img)}" width="160" alt="${title}" style="display:block;width:100%;max-width:160px;height:auto;margin:0 auto;border:1px solid ${C.border};border-radius:18px;">
@@ -127,11 +127,11 @@ export function variantB(asset) {
   const inner = `<table role="presentation" class="w" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;">
 <tr><td bgcolor="${C.surface}" style="background:${C.surface};background-image:radial-gradient(120% 70% at 50% 0%,rgba(124,92,255,.35),rgba(21,26,35,0) 70%);border-radius:28px 28px 0 0;border:1px solid ${C.border};border-bottom:0;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td align="center" style="padding:36px 32px 0;"><img src="${asset('logo.png')}" width="120" alt="Squadup" style="display:block;width:120px;height:auto;border:0;"></td></tr>
+  <tr><td align="center" style="padding:36px 32px 0;"><img src="${asset('logo.png')}" width="120" alt="SquadUp" style="display:block;width:120px;height:auto;border:0;"></td></tr>
   <tr><td align="center" class="px" style="padding:24px 40px 0;">
     <div style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(43,214,123,.12);border:1px solid rgba(43,214,123,.3);font:600 13px/16px ${FONT};color:${C.success};">&#10003;&nbsp; Подписка подтверждена</div>
     <h1 class="h1" style="margin:18px 0 0;font:800 34px/40px ${FONT};color:${C.text};">Скоро соберём<br>вашу команду</h1>
-    <p style="margin:14px 0 0;font:16px/24px ${FONT};color:${C.text2};">Squadup выйдет в Google Play и App Store — и вы узнаете об этом первыми. А пока посмотрите, что вас ждёт.</p>
+    <p style="margin:14px 0 0;font:16px/24px ${FONT};color:${C.text2};">SquadUp выйдет в Google Play и App Store — и вы узнаете об этом первыми. А пока посмотрите, что вас ждёт.</p>
   </td></tr>
   <tr><td style="padding:32px 18px 36px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -166,7 +166,7 @@ export function variantC(asset) {
 <div style="font:15px/22px ${FONT};color:${muted};padding-top:2px;">${text}</div></td></tr>`;
   const inner = `<table role="presentation" class="w" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;">
 <tr><td align="center" bgcolor="${C.bg}" style="background:${C.bg};border-radius:20px 20px 0 0;padding:28px 24px;">
-  <img src="${asset('logo.png')}" width="110" alt="Squadup" style="display:block;width:110px;height:auto;border:0;">
+  <img src="${asset('logo.png')}" width="110" alt="SquadUp" style="display:block;width:110px;height:auto;border:0;">
 </td></tr>
 <tr><td bgcolor="${C.cyan}" style="background:${C.cyan};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
 <tr><td bgcolor="${paper}" class="px" style="background:${paper};padding:36px 40px 12px;border-left:1px solid ${line};border-right:1px solid ${line};">
@@ -192,9 +192,9 @@ export function variantC(asset) {
 export function plainText() {
   return `Вы в списке первых!
 
-Спасибо, что оставили почту на squadup.ru. Когда Squadup выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.
+Спасибо, что оставили почту на squadup.ru. Когда SquadUp выйдет в Google Play и App Store, мы пришлём одно письмо со ссылками.
 
-Squadup — поиск тиммейтов, команд и турниров в Dota 2, League of Legends и CS2.
+SquadUp — поиск тиммейтов, команд и турниров в Dota 2, League of Legends и CS2.
 
 Новости и дата запуска: ${TG}
 

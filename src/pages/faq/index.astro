@@ -12,7 +12,7 @@ const faqLd = {
   mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 ---
-<Base title="Частые вопросы" description="Ответы на частые вопросы о Squadup: запуск приложения, стоимость, игры, мэтчи, команды, турниры, призы и выплаты.">
+<Base title="Частые вопросы" description="Ответы на частые вопросы о SquadUp: запуск приложения, стоимость, игры, мэтчи, команды, турниры, призы и выплаты.">
   <script type="application/ld+json" set:html={JSON.stringify(faqLd)} slot="head" />
   <PageHero caps="FAQ" title="Частые вопросы" block="faq-hero"
             lead="Не нашли ответ — напишите нам в Telegram или на почту." />

@@ -40,7 +40,7 @@ const steps = [
       <div class="hero__copy">
         <span class="chip hero__badge"><span class="dot" style="background:var(--success)"></span>Скоро в Google Play и App Store</span>
         <h1 class="h1">Найди тиммейтов.<br /><span class="grad-text">Выиграй турнир.</span></h1>
-        <p class="lead">Squadup — приложение для поиска игроков, сбора команд и турниров с призовым фондом по Dota&nbsp;2, League of Legends и CS2.</p>
+        <p class="lead">SquadUp — приложение для поиска игроков, сбора команд и турниров с призовым фондом по Dota&nbsp;2, League of Legends и CS2.</p>
         <div class="hero__actions">
           <a href="#notify" class="btn btn--primary" data-track={EVENTS.notifyClick} data-track-place="hero">Узнать о запуске</a>
           <a href="#how" class="btn btn--ghost">Как это работает</a>
@@ -84,13 +84,13 @@ const steps = [
     <div class="wrap">
       <div class="section-head section-head--center reveal">
         <span class="caps">Приложение</span>
-        <h2 class="h2">Так выглядит Squadup</h2>
+        <h2 class="h2">Так выглядит SquadUp</h2>
       </div>
     </div>
     <div class="screens__track" tabindex="0" aria-label="Скриншоты приложения">
       {screens.map((s, i) => (
         <figure class="screens__item">
-          <PhoneFrame src={s.src} alt={`Экран приложения Squadup: ${s.title}`} eager={i < 4} />
+          <PhoneFrame src={s.src} alt={`Экран приложения SquadUp: ${s.title}`} eager={i < 4} />
           <figcaption><b>{s.title}</b><span class="muted">{s.text}</span></figcaption>
         </figure>
       ))}
@@ -163,7 +163,7 @@ const steps = [
       <div>
         <span class="caps">Android и iOS</span>
         <h2 class="h2">Скоро в магазинах приложений</h2>
-        <p class="lead">Мы готовим Squadup к публикации. Нажмите на свою платформу — и мы напишем, когда можно будет скачать.</p>
+        <p class="lead">Мы готовим SquadUp к публикации. Нажмите на свою платформу — и мы напишем, когда можно будет скачать.</p>
       </div>
       <StoreButtons place="home" target="#notify" />
     </div>

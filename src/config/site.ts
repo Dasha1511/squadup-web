@@ -1,10 +1,10 @@
 export const SITE = {
-  name: 'Squadup',
+  name: 'SquadUp',
   url: 'https://squadup.ru',
-  title: 'Squadup — поиск тиммейтов и турниры по Dota 2, LoL и CS2',
+  title: 'SquadUp — поиск тиммейтов и турниры по Dota 2, LoL и CS2',
   description:
-    'Squadup — мобильное приложение для поиска тиммейтов, сбора команд и турниров с призовым фондом по Dota 2, League of Legends и CS2.',
-  email: 'dashamolchanova87@gmail.com',
+    'SquadUp — мобильное приложение для поиска тиммейтов, сбора команд и турниров с призовым фондом по Dota 2, League of Legends и CS2.',
+  email: 'hello.squadup@gmail.com',
   telegram: 'https://t.me/SquadUp_cyber',
   telegramHandle: '@SquadUp_cyber',
   operator: 'Молчанова Д. Д.',

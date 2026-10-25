@@ -42,15 +42,15 @@ const blocks = [
     img: '/screens/results.webp',
     items: [
       { icon: Coins, t: 'Распределение 60 / 30 / 10%' },
-      { icon: Wallet, t: 'Выплата через СБП или на карту, налог удерживает Squadup' },
+      { icon: Wallet, t: 'Выплата через СБП или на карту, налог удерживает SquadUp' },
       { icon: Users, t: 'Доля каждого игрока видна в итогах турнира' },
     ],
   },
 ];
 ---
-<Base title="Возможности" description="Поиск тиммейтов, команды, турниры и призы в Squadup: что умеет приложение для игроков и организаторов Dota 2, LoL и CS2.">
+<Base title="Возможности" description="Поиск тиммейтов, команды, турниры и призы в SquadUp: что умеет приложение для игроков и организаторов Dota 2, LoL и CS2.">
   <PageHero caps="Возможности" title="Одно приложение — от дуо до турнира" block="features-hero"
-            lead="Squadup закрывает весь путь игрока: найти людей, собрать состав и сыграть на призовой фонд." />
+            lead="SquadUp закрывает весь путь игрока: найти людей, собрать состав и сыграть на призовой фонд." />
 
   {blocks.map((b, i) => (
     <section class:list={['section feat-row', { 'feat-row--rev': i % 2 === 1 }]} id={b.id} data-sq-block={`features-${b.id}`}>
@@ -63,7 +63,7 @@ const blocks = [
             {b.items.map((it) => <li><span class="icon-tile"><it.icon size={20} stroke-width={1.5} /></span>{it.t}</li>)}
           </ul>
         </div>
-        <div class="feat-row__img reveal"><PhoneFrame src={b.img} alt={`Squadup: ${b.caps.toLowerCase()}`} eager={i === 0} /></div>
+        <div class="feat-row__img reveal"><PhoneFrame src={b.img} alt={`SquadUp: ${b.caps.toLowerCase()}`} eager={i === 0} /></div>
       </div>
     </section>
   ))}
