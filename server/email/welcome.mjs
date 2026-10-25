@@ -2,9 +2,7 @@
 // Настройки берутся из /etc/squadup-subscribe.env (см. deploy/setup-mail.sh).
 import { variantC, plainText, SUBJECT } from './templates.mjs';
 import { buildMessage, sendMail } from './smtp.mjs';
-import fs from 'node:fs';
 
-const LOGO = fs.readFileSync(new URL('./logo.png', import.meta.url));
 
 const ASSETS = 'https://squadup.ru/email/';
 
@@ -13,13 +11,12 @@ export const mailConfigured = () => Boolean(process.env.MAIL_USER && process.env
 export async function sendWelcome(to) {
   const user = process.env.MAIL_USER;
   const message = buildMessage({
-    fromName: process.env.MAIL_FROM_NAME || 'SquadUp',
+    fromName: 'SquadUp',
     from: user,
     to,
     replyTo: user,
     subject: SUBJECT,
-    html: variantC((name) => (name === 'logo.png' ? 'cid:logo@squadup' : ASSETS + name)),
-    inline: [{ cid: 'logo@squadup', filename: 'squadup-logo.png', type: 'image/png', content: LOGO }],
+    html: variantC((name) => ASSETS + name),
     text: plainText(),
   });
   await sendMail({

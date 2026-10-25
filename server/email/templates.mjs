@@ -166,7 +166,7 @@ export function variantC(asset) {
 <div style="font:15px/22px ${FONT};color:${muted};padding-top:2px;">${text}</div></td></tr>`;
   const inner = `<table role="presentation" class="w" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;">
 <tr><td align="center" bgcolor="${C.bg}" style="background:${C.bg};border-radius:20px 20px 0 0;padding:28px 24px;">
-  <img src="${asset('logo.png')}" width="110" alt="SquadUp" style="display:block;width:110px;height:auto;border:0;">
+  <div style="font:900 34px/38px ${FONT};letter-spacing:-1px;color:#ffffff;">Squad<span style="color:#7c5cff;">Up</span></div>
 </td></tr>
 <tr><td bgcolor="${C.cyan}" style="background:${C.cyan};height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
 <tr><td bgcolor="${paper}" class="px" style="background:${paper};padding:36px 40px 12px;border-left:1px solid ${line};border-right:1px solid ${line};">
