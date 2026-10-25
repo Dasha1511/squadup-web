@@ -7,12 +7,14 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import dns from 'node:dns/promises';
+import { sendWelcome, mailConfigured } from './email/welcome.mjs';
 import { fileURLToPath } from 'node:url';
 
 const HOST = process.env.SUB_HOST || '127.0.0.1';
 const PORT = Number(process.env.SUB_PORT || 8787);
 const DATA_DIR = process.env.SUB_DATA_DIR || path.join(path.dirname(fileURLToPath(import.meta.url)), 'data');
 const FILE = path.join(DATA_DIR, 'subscribers.jsonl');
+const MAIL_LOG = path.join(DATA_DIR, 'welcome.jsonl');
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MAX_BODY = 2048;
 const WINDOW_MS = 10 * 60 * 1000;
@@ -59,6 +61,20 @@ async function domainLookup(domain) {
   return r === 'timeout' ? true : r;
 }
 
+// Письмо-визитка: отправляем в фоне, результат пишем в welcome.jsonl.
+// Одна повторная попытка через минуту, если почтовый сервер не ответил.
+async function welcome(email, attempt = 1) {
+  if (!mailConfigured()) return;
+  const log = (ok, error) => fs.appendFileSync(MAIL_LOG, JSON.stringify({ email, ok, error, attempt, at: new Date().toISOString() }) + '\n', { mode: 0o600 });
+  try {
+    await sendWelcome(email);
+    log(true);
+  } catch (e) {
+    log(false, String(e.message || e).slice(0, 200));
+    if (attempt === 1) setTimeout(() => welcome(email, 2), 60_000);
+  }
+}
+
 function send(res, code, obj) {
   res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(obj));
@@ -98,6 +114,7 @@ const server = http.createServer((req, res) => {
     };
     fs.appendFileSync(FILE, JSON.stringify(row) + '\n', { mode: 0o600 });
     send(res, 200, { ok: true });
+    welcome(email);
   });
 });
 

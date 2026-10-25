@@ -5,7 +5,7 @@
 const FONT = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const TG = 'https://t.me/SquadUp_cyber';
 const SITE = 'https://squadup.ru';
-export const CONTACT = process.env.MAIL_CONTACT || 'SquadUp@gmail.com';
+export const CONTACT = process.env.MAIL_CONTACT || 'hello.squadup@gmail.com';
 
 export const SUBJECT = 'Вы в списке первых — Squadup';
 export const PREHEADER = 'Напишем одно письмо, когда Squadup выйдет в Google Play и App Store.';
