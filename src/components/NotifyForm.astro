@@ -38,6 +38,7 @@ const uid = `nf-${place}`;
 
 <script>
   import { track } from '../scripts/analytics';
+  const BAD_EMAIL = 'Email введён некорректно. Проверьте адрес, например: name@mail.ru';
   document.querySelectorAll<HTMLFormElement>('[data-notify-form]').forEach((form) => {
     const msg = form.querySelector<HTMLElement>('.nf__msg')!;
     const btn = form.querySelector<HTMLButtonElement>('.nf__submit')!;
@@ -46,8 +47,10 @@ const uid = `nf-${place}`;
       const fd = new FormData(form);
       const email = String(fd.get('email') || '').trim();
       msg.className = 'nf__msg';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { msg.textContent = 'Проверьте email — похоже, в нём ошибка.'; msg.classList.add('is-err'); return; }
-      if (!fd.get('consent')) { msg.textContent = 'Отметьте согласие на обработку email.'; msg.classList.add('is-err'); return; }
+      const show = (text: string, kind: 'err' | 'info' = 'err') => { msg.textContent = text; msg.classList.add(kind === 'err' ? 'is-err' : 'is-info'); };
+      if (!email) { show('Введите email.'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { show(BAD_EMAIL); return; }
+      if (!fd.get('consent')) { show('Отметьте согласие на обработку email.'); return; }
       btn.disabled = true; btn.textContent = 'Отправляем…';
       try {
         // text/plain — «простой» запрос без предварительного CORS-запроса OPTIONS
@@ -60,7 +63,14 @@ const uid = `nf-${place}`;
           body: JSON.stringify({ email, consent: true, company: fd.get('company') || '', place: form.dataset.place, page: location.pathname }),
         });
         clearTimeout(timer);
-        if (!res.ok) throw new Error(String(res.status));
+        if (!res.ok) {
+          const err = String((await res.json().catch(() => ({}))).error || '');
+          if (err === 'already_subscribed') { show('Эта почта уже получает уведомления.', 'info'); return; }
+          if (err === 'bad_email') { show(BAD_EMAIL); return; }
+          if (err === 'bad_domain') { show('Такого почтового адреса не существует. Проверьте часть после «@».'); return; }
+          if (err === 'too_many_requests') { show('Слишком много попыток. Попробуйте через 10 минут.'); return; }
+          throw new Error(String(res.status));
+        }
         track('subscribe', { place: form.dataset.place || '' });
         form.hidden = true;
         const done = form.parentElement?.querySelector<HTMLElement>('.nf__done');
@@ -91,6 +101,7 @@ const uid = `nf-${place}`;
   .nf__consent a { color: #b7a6ff; text-decoration: underline; text-underline-offset: 2px; }
   .nf__msg { margin: 10px 0 0; min-height: 20px; font-size: 14px; }
   .nf__msg.is-err { color: var(--error); }
+  .nf__msg.is-info { color: var(--cyan); }
   .nf__done { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: var(--r-tile); background: rgba(43, 214, 123, .08); border: 1px solid rgba(43, 214, 123, .25); }
   .nf__done[hidden] { display: none; }
   .nf__done p { margin: 0; }
