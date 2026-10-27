@@ -2,4 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
+# Яндекс: не считать адреса с UTM-метками отдельными страницами
+User-agent: Yandex
+Allow: /
+Disallow: /api/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&sqdebug
+
 Sitemap: https://squadup.ru/sitemap-index.xml

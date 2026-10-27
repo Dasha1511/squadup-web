@@ -15,6 +15,9 @@ export const SITE = {
   consentVersion: '2026-10-25',
   // Сайт размещён на GitHub Pages, обработчик формы — на сервере Timeweb за api.squadup.ru
   subscribeUrl: 'https://api.squadup.ru/api/subscribe',
+  // Коды подтверждения прав из Яндекс Вебмастера и Google Search Console
+  yandexVerification: '',
+  googleVerification: '',
 };
 
 export const NAV = [
