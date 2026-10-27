@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { ARTICLES, formatDate } from '../../config/articles';
+const list = [...ARTICLES].sort((x, y) => y.published.localeCompare(x.published));
+---
+<Base title="Статьи о киберспорте" description="Статьи SquadUp о киберспорте: форматы матчей, турнирные сетки, роли и командная игра в Dota 2, CS2 и League of Legends.">
+  <PageHero caps="Статьи" title="Киберспорт простыми словами" block="articles-hero"
+            lead="Разбираем, как устроены турниры, форматы матчей и командная игра в Dota 2, CS2 и League of Legends." />
+
+  <section class="section section--tight" data-sq-block="articles-list">
+    <div class="wrap grid-2">
+      {list.map((a) => (
+        <a href={`/articles/${a.slug}/`} class="card al reveal">
+          <div class="al__tags">{a.tags.map((t) => <span class="chip">{t}</span>)}</div>
+          <h2 class="h3 al__title">{a.title}</h2>
+          <p class="muted">{a.lead}</p>
+          <span class="al__meta muted">{formatDate(a.published)} · {a.readMinutes} мин</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .al { display: flex; flex-direction: column; gap: 12px; transition: border-color .15s, transform .15s; }
+  .al:hover { border-color: rgba(124, 92, 255, .5); transform: translateY(-2px); }
+  .al__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .al__title { font-size: 22px; line-height: 1.3; }
+  .al p { margin: 0; }
+  .al__meta { font-size: 14px; margin-top: auto; }
+</style>

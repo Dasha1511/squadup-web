@@ -24,6 +24,7 @@ export const NAV = [
   { href: '/features/', label: 'Возможности' },
   { href: '/how-it-works/', label: 'Как это работает' },
   { href: '/games/', label: 'Игры' },
+  { href: '/articles/', label: 'Статьи' },
   { href: '/faq/', label: 'Вопросы' },
   { href: '/contacts/', label: 'Контакты' },
 ];

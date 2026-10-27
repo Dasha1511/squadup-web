@@ -1,0 +1,113 @@
+---
+// Схемы турнирных сеток для статей: single — олимпийская система на 8 команд,
+// double — сетка с нижней веткой на 4 команды, swiss — швейцарская система 3 победы / 3 поражения.
+interface Props { type: 'single' | 'double' | 'swiss'; caption: string }
+const { type, caption } = Astro.props;
+const box = (x: number, y: number, a: string, b: string, hl = '') => ({ x, y, a, b, hl });
+---
+<figure class="bd">
+  {type === 'single' && (
+    <svg viewBox="0 0 760 330" role="img" aria-label={caption}>
+      {[
+        box(10, 10, 'Команда 1', 'Команда 8'), box(10, 90, 'Команда 4', 'Команда 5'),
+        box(10, 170, 'Команда 2', 'Команда 7'), box(10, 250, 'Команда 3', 'Команда 6'),
+        box(270, 50, 'Победитель 1–8', 'Победитель 4–5'), box(270, 210, 'Победитель 2–7', 'Победитель 3–6'),
+        box(530, 130, 'Финалист', 'Финалист', 'final'),
+      ].map((m) => (
+        <g>
+          <rect x={m.x} y={m.y} width="220" height="64" rx="10" class:list={['bd__box', { 'bd__box--final': m.hl }]} />
+          <text x={m.x + 14} y={m.y + 26} class="bd__t">{m.a}</text>
+          <line x1={m.x} x2={m.x + 220} y1={m.y + 32} y2={m.y + 32} class="bd__sep" />
+          <text x={m.x + 14} y={m.y + 54} class="bd__t">{m.b}</text>
+        </g>
+      ))}
+      <path d="M230 42 H250 V82 H270 M230 122 H250 V82" class="bd__ln" />
+      <path d="M230 202 H250 V242 H270 M230 282 H250 V242" class="bd__ln" />
+      <path d="M490 82 H510 V162 H530 M490 242 H510 V162" class="bd__ln" />
+      <text x="10" y="326" class="bd__lbl">Четвертьфиналы</text>
+      <text x="270" y="326" class="bd__lbl">Полуфиналы</text>
+      <text x="530" y="326" class="bd__lbl">Гранд-финал</text>
+    </svg>
+  )}
+  {type === 'double' && (
+    <svg viewBox="0 0 760 300" role="img" aria-label={caption}>
+      <text x="10" y="16" class="bd__lbl bd__lbl--up">ВЕРХНЯЯ СЕТКА</text>
+      {[
+        box(10, 26, 'Команда A', 'Команда D'), box(10, 106, 'Команда B', 'Команда C'),
+        box(270, 66, 'Победитель A–D', 'Победитель B–C'),
+      ].map((m) => (
+        <g>
+          <rect x={m.x} y={m.y} width="220" height="64" rx="10" class="bd__box" />
+          <text x={m.x + 14} y={m.y + 26} class="bd__t">{m.a}</text>
+          <line x1={m.x} x2={m.x + 220} y1={m.y + 32} y2={m.y + 32} class="bd__sep" />
+          <text x={m.x + 14} y={m.y + 54} class="bd__t">{m.b}</text>
+        </g>
+      ))}
+      <text x="10" y="216" class="bd__lbl bd__lbl--low">НИЖНЯЯ СЕТКА — второй шанс</text>
+      {[
+        box(10, 226, 'Проигравший A–D', 'Проигравший B–C', 'low'), box(270, 226, 'Победитель нижней', 'Проигравший финала верхней', 'low'),
+        box(530, 146, 'Победитель верхней', 'Победитель нижней', 'final'),
+      ].map((m) => (
+        <g>
+          <rect x={m.x} y={m.y} width="220" height="64" rx="10" class:list={['bd__box', { 'bd__box--final': m.hl === 'final', 'bd__box--low': m.hl === 'low' }]} />
+          <text x={m.x + 14} y={m.y + 26} class="bd__t">{m.a}</text>
+          <line x1={m.x} x2={m.x + 220} y1={m.y + 32} y2={m.y + 32} class="bd__sep" />
+          <text x={m.x + 14} y={m.y + 54} class="bd__t">{m.b}</text>
+        </g>
+      ))}
+      <path d="M230 58 H250 V98 H270 M230 138 H250 V98" class="bd__ln" />
+      <path d="M490 98 H510 V178 H530" class="bd__ln" />
+      <path d="M230 258 H270" class="bd__ln" />
+      <path d="M490 258 H510 V178" class="bd__ln" />
+      <path d="M380 130 V200 Q380 214 366 214 H300 Q286 214 286 226" class="bd__ln bd__ln--drop" />
+      <text x="392" y="176" class="bd__note">проигравший — вниз</text>
+      <text x="530" y="246" class="bd__lbl">Гранд-финал</text>
+    </svg>
+  )}
+  {type === 'swiss' && (
+    <svg viewBox="0 0 760 300" role="img" aria-label={caption}>
+      {[
+        { x: 10, rows: [['0–0', '16 команд', '']] },
+        { x: 160, rows: [['1–0', '8 команд', ''], ['0–1', '8 команд', '']] },
+        { x: 310, rows: [['2–0', '4', ''], ['1–1', '8', ''], ['0–2', '4', '']] },
+        { x: 460, rows: [['3–0', 'проходят', 'up'], ['2–1', '6', ''], ['1–2', '6', ''], ['0–3', 'выбывают', 'out']] },
+        { x: 610, rows: [['3–1', 'проходят', 'up'], ['2–2 → 3–2', 'проходят', 'up'], ['2–2 → 2–3', 'выбывают', 'out'], ['1–3', 'выбывают', 'out']] },
+      ].map((col) => (
+        <g>
+          {col.rows.map((r, i) => {
+            const n = col.rows.length; const h = 52; const gap = (280 - n * h) / (n + 1); const y = 10 + gap + i * (h + gap);
+            return (
+              <g>
+                <rect x={col.x} y={y} width="140" height={h} rx="10" class:list={['bd__box', { 'bd__box--up': r[2] === 'up', 'bd__box--out': r[2] === 'out' }]} />
+                <text x={col.x + 70} y={y + 22} text-anchor="middle" class="bd__t bd__t--b">{r[0]}</text>
+                <text x={col.x + 70} y={y + 42} text-anchor="middle" class="bd__t bd__t--s">{r[1]}</text>
+              </g>
+            );
+          })}
+        </g>
+      ))}
+    </svg>
+  )}
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .bd { margin: 24px 0 28px; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); overflow-x: auto; }
+  .bd svg { display: block; width: 100%; min-width: 560px; height: auto; }
+  .bd figcaption { margin-top: 10px; font-size: 14px; color: var(--text-2); }
+  .bd :global(.bd__box) { fill: var(--surface-2); stroke: var(--border); }
+  .bd :global(.bd__box--final) { stroke: var(--primary); fill: rgba(124, 92, 255, .14); }
+  .bd :global(.bd__box--low) { stroke: rgba(34, 211, 238, .45); }
+  .bd :global(.bd__box--up) { stroke: rgba(43, 214, 123, .6); fill: rgba(43, 214, 123, .1); }
+  .bd :global(.bd__box--out) { stroke: rgba(255, 77, 77, .5); fill: rgba(255, 77, 77, .08); }
+  .bd :global(.bd__sep) { stroke: var(--border); }
+  .bd :global(.bd__t) { fill: var(--text); font: 500 15px var(--font); }
+  .bd :global(.bd__t--b) { font-weight: 700; font-size: 17px; }
+  .bd :global(.bd__t--s) { fill: var(--text-2); font-size: 13px; }
+  .bd :global(.bd__ln) { fill: none; stroke: #4a5363; stroke-width: 2; }
+  .bd :global(.bd__ln--drop) { stroke: var(--cyan); stroke-dasharray: 6 5; }
+  .bd :global(.bd__lbl) { fill: var(--text-2); font: 600 12px var(--font); letter-spacing: .06em; }
+  .bd :global(.bd__lbl--up) { fill: #b7a6ff; }
+  .bd :global(.bd__lbl--low) { fill: var(--cyan); }
+  .bd :global(.bd__note) { fill: var(--cyan); font: 500 13px var(--font); }
+</style>
