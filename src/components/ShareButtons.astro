@@ -1,0 +1,64 @@
+---
+// Кнопки «Поделиться статьёй»: системное меню телефона (Web Share API), Telegram, ВКонтакте, WhatsApp и копирование ссылки.
+// Сторонние скрипты не подключаются — только обычные ссылки.
+import { Share2, Send, Link2, MessageCircle } from '@lucide/astro';
+import { EVENTS } from '../config/site';
+interface Props { url: string; title: string; compact?: boolean }
+const { url, title, compact = false } = Astro.props;
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+---
+<div class:list={['share', { 'share--compact': compact }]} data-share-url={url} data-share-title={title}>
+  <span class="share__lbl">Поделиться статьёй</span>
+  <div class="share__btns">
+    <button type="button" class="share__b share__b--native" data-share-native hidden data-track={EVENTS.share} data-track-place="native" aria-label="Поделиться"><Share2 size={18} stroke-width={1.75} /><span>Поделиться</span></button>
+    <a class="share__b share__b--tg" href={`https://t.me/share/url?url=${u}&text=${t}`} target="_blank" rel="noopener" data-track={EVENTS.share} data-track-place="telegram" aria-label="Поделиться в Telegram"><Send size={18} stroke-width={1.75} /><span>Telegram</span></a>
+    <a class="share__b share__b--vk" href={`https://vk.com/share.php?url=${u}&title=${t}`} target="_blank" rel="noopener" data-track={EVENTS.share} data-track-place="vk" aria-label="Поделиться ВКонтакте"><b class="share__vk">VK</b><span>ВКонтакте</span></a>
+    <a class="share__b share__b--wa" href={`https://wa.me/?text=${t}%20${u}`} target="_blank" rel="noopener" data-track={EVENTS.share} data-track-place="whatsapp" aria-label="Поделиться в WhatsApp"><MessageCircle size={18} stroke-width={1.75} /><span>WhatsApp</span></a>
+    <button type="button" class="share__b" data-share-copy data-track={EVENTS.share} data-track-place="copy" aria-label="Скопировать ссылку"><Link2 size={18} stroke-width={1.75} /><span data-share-copy-text>Скопировать ссылку</span></button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.share').forEach((box) => {
+    const url = box.dataset.shareUrl!;
+    const title = box.dataset.shareTitle!;
+    const native = box.querySelector<HTMLButtonElement>('[data-share-native]');
+    if (native && typeof navigator.share === 'function') {
+      native.hidden = false;
+      native.addEventListener('click', () => { navigator.share({ title, url }).catch(() => {}); });
+    }
+    const copy = box.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const label = box.querySelector<HTMLElement>('[data-share-copy-text]');
+    copy?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch { /* ничего */ }
+        ta.remove();
+      }
+      if (label) { label.textContent = 'Ссылка скопирована'; setTimeout(() => { label.textContent = 'Скопировать ссылку'; }, 2000); }
+    });
+  });
+</script>
+
+<style>
+  .share { margin: 24px 0; padding: 16px 18px; border-radius: var(--r-tile); background: var(--surface); border: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .share--compact { background: transparent; border: 0; padding: 0; margin: 20px 0 0; }
+  .share__lbl { font-weight: 700; color: var(--text); font-size: 15px; }
+  .share--compact .share__lbl { font-size: 13px; color: var(--text-2); font-weight: 600; }
+  .share__btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .share__b { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text) !important; font: 600 14px var(--font); text-decoration: none !important; cursor: pointer; transition: border-color .15s, background .15s; }
+  .share__b:hover { border-color: #3a4352; background: #252c37; }
+  .share__b[hidden] { display: none; }
+  .share__b--tg :global(svg) { color: #2aabee; }
+  .share__b--wa :global(svg) { color: #25d366; }
+  .share__vk { font-size: 12px; font-weight: 800; color: #fff; background: #0077ff; border-radius: 5px; padding: 2px 4px; line-height: 1; }
+  .share__b--native { background: var(--primary-fill); border-color: var(--primary); }
+  @media (max-width: 640px) {
+    .share__b span { display: none; }
+    .share__b--native span { display: inline; }
+    .share__b { padding: 0 12px; }
+  }
+</style>

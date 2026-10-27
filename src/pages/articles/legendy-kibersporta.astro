@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BarChart from '../../components/BarChart.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 import { SITE, EVENTS } from '../../config/site';
 import { ARTICLES, formatDate } from '../../config/articles';
 
@@ -11,6 +12,7 @@ const toc = [
   ['dota', 'Dota 2: Dendi и N0tail'],
   ['cs', 'Counter-Strike: s1mple и ZywOo'],
   ['lol', 'League of Legends: Faker и Deft'],
+  ['fakty', 'Забавные факты о легендах'],
   ['sravnenie', 'Легенды в цифрах'],
   ['urok', 'Чему у них поучиться'],
   ['faq', 'Частые вопросы'],
@@ -25,22 +27,37 @@ const stats = [
 
 type P = {
   id: string; game: 'd2' | 'cs' | 'lol'; nick: string; name: string; born: string; role: string; team: string;
-  kpi: [string, string][];
+  kpi: [string, string][]; photo?: { author: string; lic: string; url: string };
 };
 const players: Record<string, P> = {
   dendi: { id: 'dendi', game: 'd2', nick: 'Dendi', name: 'Данил Ишутин', born: '1989, Львов, Украина', role: 'Мидер', team: 'Na’Vi · 2010–2018',
-    kpi: [['TI 2011', 'чемпион'], ['TI 2012', 'финал'], ['TI 2013', 'финал']] },
+    kpi: [['TI 2011', 'чемпион'], ['TI 2012', 'финал'], ['TI 2013', 'финал']], photo: { author: 'Jakob Wells', lic: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Dendi_TI4.jpg' } },
   n0tail: { id: 'n0tail', game: 'd2', nick: 'N0tail', name: 'Йохан Сундстейн', born: '1993, Дания', role: 'Капитан, саппорт', team: 'OG · с 2015',
-    kpi: [['2', 'победы на TI подряд'], ['4', 'Мейджора'], ['$7 млн+', 'призовых']] },
+    kpi: [['2', 'победы на TI подряд'], ['4', 'Мейджора'], ['$7 млн+', 'призовых']], photo: { author: 'Dota 2 The International', lic: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:The_International_2018_(42413912070)_(cropped).jpg' } },
   s1mple: { id: 's1mple', game: 'cs', nick: 's1mple', name: 'Александр Костылев', born: '1997, Киев, Украина', role: 'Снайпер (AWP)', team: 'NAVI · 2016–2025',
-    kpi: [['3×', 'игрок года HLTV'], ['8 лет', 'подряд в топ-20'], ['0', 'проигранных карт на Мейджоре 2021']] },
+    kpi: [['3×', 'игрок года HLTV'], ['8 лет', 'подряд в топ-20'], ['0', 'проигранных карт на Мейджоре 2021']], photo: { author: 'Esports Kingdom', lic: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Oleksandr_s1mple_Kostyliev.jpg' } },
   zywoo: { id: 'zywoo', game: 'cs', nick: 'ZywOo', name: 'Матьё Эрбо', born: '2000, Франция', role: 'Снайпер, райфлер', team: 'Vitality · с 2018',
-    kpi: [['4×', 'игрок года HLTV'], ['3', 'Мейджора'], ['3', 'MVP Мейджоров']] },
+    kpi: [['4×', 'игрок года HLTV'], ['3', 'Мейджора'], ['3', 'MVP Мейджоров']], photo: { author: 'VaKarM.net', lic: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Zywoo_in_2022_(cropped).jpg' } },
   faker: { id: 'faker', game: 'lol', nick: 'Faker', name: 'Ли Сан Хёк', born: '1996, Сеул, Корея', role: 'Мидер', team: 'T1 · с 2013',
-    kpi: [['6', 'титулов Worlds'], ['10', 'титулов LCK'], ['2', 'золота Азиатских игр']] },
+    kpi: [['6', 'титулов Worlds'], ['10', 'титулов LCK'], ['2', 'золота Азиатских игр']], photo: { author: 'Marie Claire', lic: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:T1_Faker_Lee_Sang-Hyeok_in_a_2026_Interview.png' } },
   deft: { id: 'deft', game: 'lol', nick: 'Deft', name: 'Ким Хёк Гю', born: '1996, Сеул, Корея', role: 'Стрелок (ADC)', team: '7 клубов · 2013–2024',
-    kpi: [['Worlds', '2022'], ['MSI', '2015'], ['3000', 'убийств — первым в истории']] },
+    kpi: [['Worlds', '2022'], ['MSI', '2015'], ['3000', 'убийств — первым в истории']], photo: { author: 'E레기', lic: 'CC BY 3.0', url: 'https://commons.wikimedia.org/wiki/File:Deft_interview_in_2022.jpg' } },
 };
+
+const facts: [string, string, string][] = [
+  ['dendi', 'Пианист и акробат', 'В детстве Дэнди учился играть на фортепиано, занимался акробатикой и танцами. А в 2011 году, в тот же год, когда выиграл первый TI, получил диплом Украинской академии печати.'],
+  ['dendi', 'Проиграл боту', 'На TI 2017 Дэнди вызвали на сцену сыграть один на один против бота OpenAI. Бот выиграл обе игры.'],
+  ['n0tail', 'Профи в 15 лет', 'N0tail начинал не с Dota 2, а с Heroes of Newerth — и стал профессионалом уже в 15 лет. Позже он ушёл из школы, чтобы полностью посвятить себя игре.'],
+  ['n0tail', 'Forbes 30 до 30', 'В 25 лет Йохан попал в список Forbes 30 Under 30 — рейтинг молодых людей, которые меняют свою индустрию.'],
+  ['s1mple', 'Граффити от Valve', 'После невероятного выстрела в прыжке на ESL One Cologne 2016 Valve нарисовала в игре граффити на карте Cache в честь этого момента.'],
+  ['s1mple', 'Нож, который не сработал', 'На ESL One Cologne 2019 при счёте на матч-пойнт и раскладе 3 на 1 s1mple решил покрасоваться и убить соперника ножом. Не вышло: nitr0 из Team Liquid выжил и выиграл карту.'],
+  ['zywoo', 'Не больше часа в день', 'В детстве мама разрешала ZywOo играть меньше часа в день и поставила условие: сначала школа и выпускные экзамены, потом киберспорт. Иногда она играла вместе с ним.'],
+  ['zywoo', 'Лучший с первого сезона', 'ZywOo — один из трёх игроков в истории CS, кто стал лучшим игроком года по версии HLTV в свой первый полный профессиональный сезон.'],
+  ['faker', 'Брокколи вместо шампанского', 'После победы на Worlds 2015 Фейкер прямо на сцене откусил сырую брокколи — кадр разлетелся по всему интернету.'],
+  ['faker', 'Своё мороженое', 'В 2020 году кондитерская компания Lotte выпустила мороженое, названное в честь Фейкера. А ещё он почти не пользуется скинами в игре — говорит, так проще сосредоточиться.'],
+  ['deft', 'Альпака и Тоттенхэм', 'Одно из прозвищ Дефта — «Альпака». Он большой фанат футбольного «Тоттенхэма» и Сон Хын Мина, а его любимый чемпион — Jinx.'],
+  ['deft', 'С олимпийским факелом', 'В 2018 году Deft участвовал в эстафете олимпийского огня зимних Игр в Пхёнчхане.'],
+];
 
 const hltv = [
   ['2018', 's1mple'], ['2019', 'ZywOo'], ['2020', 'ZywOo'], ['2021', 's1mple'],
@@ -94,6 +111,7 @@ const jsonLd = [
       <h1 class="art__title">{a.title}</h1>
       <p class="lead">{a.lead}</p>
       <p class="art__meta muted">{formatDate(a.published)} · {a.readMinutes} минут чтения · Редакция SquadUp</p>
+      <ShareButtons url={url} title={a.title} compact />
       <div class="stats">
         {stats.map(([n, t]) => <div class="stats__i"><b>{n}</b><span>{t}</span></div>)}
       </div>
@@ -112,13 +130,14 @@ const jsonLd = [
         <div class="gsec gsec--d2" id="dota"><span>Dota 2</span><h2>Dendi и N0tail: лицо первой эпохи и самый богатый киберспортсмен</h2></div>
 
         <div class={`pc pc--${players.dendi.game}`}>
-          <div class="pc__ava" aria-hidden="true">D</div>
+          <img class="pc__ava" src="/players/dendi.webp" alt={`${players.dendi.nick} — ${players.dendi.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.dendi.nick}</b>
             <span class="pc__name">{players.dendi.name} · {players.dendi.born}</span>
             <span class="pc__meta">{players.dendi.role} · {players.dendi.team}</span>
           </div>
           <div class="pc__kpi">{players.dendi.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.dendi.photo!.url} target="_blank" rel="noopener">{players.dendi.photo!.author}</a>, {players.dendi.photo!.lic}, кадрировано</p>
         </div>
         <p>Если спросить фаната Dota 2 «с кого всё началось», большинство ответит: с Дэнди. В 2011 году Valve провела первый The International с невиданным тогда призом в 1 млн долларов — и его забрала Na’Vi, где Дэнди был мидером и главной звездой.</p>
         <p>Дальше было ещё два финала подряд. В 2013 году Na’Vi уступила Alliance в гранд-финале 2:3 — одна из самых напряжённых серий в истории турнира. Но именно на том TI случился <a href="/articles/kak-ustroen-kibersport/#legendy">знаменитый хук из фонтана</a>: Дэнди на Пудже вытащил соперника прямо под свою базу. Пудж — его визитная карточка.</p>
@@ -127,17 +146,18 @@ const jsonLd = [
           <div class="ti3__i"><span>TI 2012</span><b>2 место</b><small>финал</small></div>
           <div class="ti3__i"><span>TI 2013</span><b>2 место</b><small>2:3 с Alliance</small></div>
         </div>
-        <aside class="fact"><span class="fact__k">Знали ли вы?</span> Дэнди — один из трёх героев документального фильма Valve «Free to Play» (2014) о первом The International. А на TI 2017 он вышел на сцену играть один на один против бота OpenAI — и проиграл обе игры. Это был один из самых обсуждаемых матчей человека против ИИ в киберспорте.</aside>
+        <aside class="fact"><span class="fact__k">Знали ли вы?</span> Дэнди — один из трёх героев документального фильма Valve «Free to Play» (2014) о первом The International. Фильм бесплатно доступен в Steam и YouTube — хороший способ увидеть, каким был киберспорт в самом начале.</aside>
         <p>В 2018 году Дэнди покинул Na’Vi после восьми лет в команде, а в 2020-м основал собственную организацию B8.</p>
 
         <div class={`pc pc--${players.n0tail.game}`}>
-          <div class="pc__ava" aria-hidden="true">N</div>
+          <img class="pc__ava" src="/players/n0tail.webp" alt={`${players.n0tail.nick} — ${players.n0tail.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.n0tail.nick}</b>
             <span class="pc__name">{players.n0tail.name} · {players.n0tail.born}</span>
             <span class="pc__meta">{players.n0tail.role} · {players.n0tail.team}</span>
           </div>
           <div class="pc__kpi">{players.n0tail.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.n0tail.photo!.url} target="_blank" rel="noopener">{players.n0tail.photo!.author}</a>, {players.n0tail.photo!.lic}, кадрировано</p>
         </div>
         <p>Йохан Сундстейн стал профессионалом в 15 лет — ещё в Heroes of Newerth, бросил школу ради киберспорта и в 2015 году собрал команду, которая позже стала OG. Под его капитанством OG выиграла четыре Мейджора, но главная история случилась в 2018-м.</p>
         <p>За несколько месяцев до The International 2018 состав OG развалился. В команду пришёл почти никому не известный мидер Topson, а тренер Ceb снова сел за компьютер как игрок. OG не получила прямого приглашения и прошла через отборочные — а потом выиграла весь турнир. Через год OG повторила успех и стала <strong>первой командой, выигравшей TI дважды подряд</strong>.</p>
@@ -159,26 +179,28 @@ const jsonLd = [
         </figure>
 
         <div class={`pc pc--${players.s1mple.game}`}>
-          <div class="pc__ava" aria-hidden="true">S</div>
+          <img class="pc__ava" src="/players/s1mple.webp" alt={`${players.s1mple.nick} — ${players.s1mple.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.s1mple.nick}</b>
             <span class="pc__name">{players.s1mple.name} · {players.s1mple.born}</span>
             <span class="pc__meta">{players.s1mple.role} · {players.s1mple.team}</span>
           </div>
           <div class="pc__kpi">{players.s1mple.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.s1mple.photo!.url} target="_blank" rel="noopener">{players.s1mple.photo!.author}</a>, {players.s1mple.photo!.lic}, кадрировано</p>
         </div>
         <p>s1mple — игрок, который сделал невозможные выстрелы нормой. Он восемь лет подряд, с 2016 по 2023 год, входил в топ-20 лучших игроков мира и трижды становился первым. Его снайперские флики разбирают покадрово, а в 2021 году он получил награду лучшего киберспортсмена на The Game Awards — премии, где обычно награждают игры, а не людей.</p>
         <p>Главная вершина — PGL Major Stockholm 2021. NAVI выиграла Мейджор, <strong>не проиграв ни одной карты</strong> за весь турнир, а s1mple стал MVP. Это был первый Мейджор и для него, и для NAVI в эпоху CS:GO.</p>
         <p>В 2023 году s1mple взял паузу, потом выступал в аренду за Team Falcons и FaZe, а в 2025-м после девяти лет в NAVI перешёл в BC.Game Esports.</p>
 
         <div class={`pc pc--${players.zywoo.game}`}>
-          <div class="pc__ava" aria-hidden="true">Z</div>
+          <img class="pc__ava" src="/players/zywoo.webp" alt={`${players.zywoo.nick} — ${players.zywoo.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.zywoo.nick}</b>
             <span class="pc__name">{players.zywoo.name} · {players.zywoo.born}</span>
             <span class="pc__meta">{players.zywoo.role} · {players.zywoo.team}</span>
           </div>
           <div class="pc__kpi">{players.zywoo.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.zywoo.photo!.url} target="_blank" rel="noopener">{players.zywoo.photo!.author}</a>, {players.zywoo.photo!.lic}, кадрировано</p>
         </div>
         <p>ZywOo пришёл в Vitality в 2018 году почти подростком — и уже через год стал лучшим игроком мира. Сначала его называли «гением без трофеев»: личные награды сыпались, а Мейджора всё не было. Всё изменилось в 2023-м, когда Vitality выиграла Мейджор в Париже — дома, перед французской публикой.</p>
         <p>Дальше — Мейджоры в Остине и Будапеште в 2025 году. На каждом из трёх ZywOo становился MVP, а на двух последних — подряд: такого не было с 2016 года. В 2025 году на Esports Awards его назвали прорывом десятилетия, а по числу MVP-медалей HLTV он обошёл s1mple.</p>
@@ -189,15 +211,16 @@ const jsonLd = [
         <p>У этой пары есть сюжет, который не придумал бы ни один сценарист. Faker и Deft родились в 1996 году в Сеуле, учились в одной школе — Mapo High School — и дебютировали в профессиональной лиге с разницей в три дня в апреле 2013-го. А девять лет спустя встретились в финале чемпионата мира.</p>
 
         <div class={`pc pc--${players.faker.game}`}>
-          <div class="pc__ava" aria-hidden="true">F</div>
+          <img class="pc__ava" src="/players/faker.webp" alt={`${players.faker.nick} — ${players.faker.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.faker.nick}</b>
             <span class="pc__name">{players.faker.name} · {players.faker.born}</span>
             <span class="pc__meta">{players.faker.role} · {players.faker.team}</span>
           </div>
           <div class="pc__kpi">{players.faker.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.faker.photo!.url} target="_blank" rel="noopener">{players.faker.photo!.author}</a>, {players.faker.photo!.lic}, кадрировано</p>
         </div>
-        <p>Фейкера часто называют величайшим киберспортсменом вообще, без уточнения игры. Всю карьеру — больше 13 лет — он провёл в одной команде, T1, а с 2020 года стал её совладельцем. Прозвище у него соответствующее: «Неубиваемый король демонов».</p>
+        <p>Фейкера часто называют величайшим киберспортсменом вообще, без уточнения игры. Всю карьеру — больше 13 лет — он провёл в одной команде, T1, а с 2020 года стал её совладельцем. Прозвище у него соответствующее: «Неубиваемый король демонов». По словам гендиректора T1, китайская команда однажды предлагала ему 20 млн долларов в год — Фейкер остался дома.</p>
         <figure class="yrs">
           <figcaption>Чемпионаты мира Фейкера</figcaption>
           <div class="yrs__row">
@@ -213,13 +236,14 @@ const jsonLd = [
         <aside class="fact fact--gold"><span class="fact__k">Не только Worlds</span> Два титула MSI, рекордные 10 побед в корейской лиге LCK, золото Азиатских игр 2022 и 2026 годов в составе сборной Кореи. Контракт с T1 продлён до 2029 года.</aside>
 
         <div class={`pc pc--${players.deft.game}`}>
-          <div class="pc__ava" aria-hidden="true">D</div>
+          <img class="pc__ava" src="/players/deft.webp" alt={`${players.deft.nick} — ${players.deft.name}`} width="240" height="288" loading="lazy" decoding="async" />
           <div class="pc__info">
             <b class="pc__nick">{players.deft.nick}</b>
             <span class="pc__name">{players.deft.name} · {players.deft.born}</span>
             <span class="pc__meta">{players.deft.role} · {players.deft.team}</span>
           </div>
           <div class="pc__kpi">{players.deft.kpi.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
+          <p class="pc__cr">Фото: <a href={players.deft.photo!.url} target="_blank" rel="noopener">{players.deft.photo!.author}</a>, {players.deft.photo!.lic}, кадрировано</p>
         </div>
         <p>Если Фейкер — это верность одной команде, то Deft — путь странника. За 12 лет он поиграл в семи клубах (в два из них возвращался), уезжал играть в Китай и выигрывал там, но заветный титул чемпиона мира никак не давался.</p>
         <figure class="path">
@@ -233,6 +257,19 @@ const jsonLd = [
         <p>В 2022 году его DRX попала на Worlds лишь четвёртой командой Кореи и начинала с отборочного этапа — плей-ина. Никто не ставил на них. DRX прошла плей-ин без поражений, выиграла группу, в четвертьфинале отыгралась с 0:2 против Edward Gaming — бывшей команды Дефта, — а в полуфинале обыграла Gen.G 3:1. Так DRX стала первой командой из плей-ина, дошедшей до финала Worlds. А там ждала T1 во главе с Фейкером. DRX победила 3:2.</p>
         <aside class="fact"><span class="fact__k">Фраза, ставшая мемом</span> После финала Deft сказал, что самое важное — несломленное сердце. Эту фразу в Корее повторяют до сих пор, а «Несломленное сердце» стало одним из его прозвищ.</aside>
         <p>В 2025 году Deft ушёл на обязательную военную службу в Корее — но завершением карьеры это пока никто не называет.</p>
+
+        <!-- ФАКТЫ -->
+        <h2 id="fakty">Забавные факты о легендах</h2>
+        <p>Легенды тоже люди: со смешными привычками, неудачными понтами и неожиданными хобби.</p>
+        <div class="ff">
+          {facts.map(([id, t, txt]) => (
+            <div class={`ff__c ff__c--${players[id].game}`}>
+              <div class="ff__h"><img src={`/players/${id}.webp`} alt="" width="40" height="48" loading="lazy" /><span>{players[id].nick}</span></div>
+              <b>{t}</b>
+              <p>{txt}</p>
+            </div>
+          ))}
+        </div>
 
         <!-- СРАВНЕНИЕ -->
         <h2 id="sravnenie">Легенды в цифрах</h2>
@@ -266,6 +303,8 @@ const jsonLd = [
             <a href="/articles/kak-ustroen-kibersport/" class="btn btn--ghost">Как устроены турниры</a>
           </div>
         </div>
+
+        <ShareButtons url={url} title={a.title} />
 
         <h2 id="faq">Частые вопросы</h2>
         <div class="art__faq">
@@ -311,9 +350,11 @@ const jsonLd = [
   .gsec--lol { background: linear-gradient(135deg, rgba(47, 111, 224, .45), rgba(11, 35, 80, .2)); border-color: rgba(90, 162, 255, .4); }
   .gsec--lol span { color: #8cc0ff; }
 
-  .pc { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 18px; align-items: center; margin: 30px 0 18px; padding: 18px; border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .pc { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: center; margin: 30px 0 18px; padding: 18px; border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--border); position: relative; overflow: hidden; }
   .pc::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; }
-  .pc__ava { width: 72px; height: 72px; border-radius: 20px; display: grid; place-items: center; font-size: 34px; font-weight: 800; color: #fff; }
+  .pc__ava { width: 96px; height: 115px; border-radius: 16px; object-fit: cover; display: block; padding: 3px; }
+  .pc__cr { grid-column: 1 / -1; margin: -6px 0 0; font-size: 11.5px; color: var(--text-2); }
+  .pc__cr a { color: var(--text-2) !important; }
   .pc__nick { display: block; font-size: 28px; line-height: 1.1; color: #fff; letter-spacing: -0.02em; }
   .pc__name, .pc__meta { display: block; font-size: 14px; color: var(--text-2); margin-top: 4px; }
   .pc__meta { color: #d5dae3; }
@@ -373,6 +414,16 @@ const jsonLd = [
   .path__i--win { border-color: #f0b90b; background: linear-gradient(170deg, rgba(240, 185, 11, .25), var(--surface-2)); }
   .path__i--win small { color: #f0b90b; font-weight: 700; }
 
+  .ff { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+  .ff__c { padding: 16px; border-radius: var(--r-tile); background: var(--surface); border: 1px solid var(--border); }
+  .ff__c--d2 { background: linear-gradient(150deg, rgba(194, 60, 42, .2), var(--surface) 60%); }
+  .ff__c--cs { background: linear-gradient(150deg, rgba(240, 185, 11, .14), var(--surface) 60%); }
+  .ff__c--lol { background: linear-gradient(150deg, rgba(47, 111, 224, .22), var(--surface) 60%); }
+  .ff__h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .ff__h img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; }
+  .ff__h span { font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
+  .ff__c b { color: #fff; font-size: 16px; }
+  .ff__c p { margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
   .lessons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
   .lessons__i { padding: 16px; border-radius: var(--r-tile); background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--primary); }
   .lessons__i b { color: #fff; }
@@ -391,15 +442,15 @@ const jsonLd = [
     .art__grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
     .art__toc { position: static; }
     .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .pc { grid-template-columns: 64px minmax(0, 1fr); }
-    .pc__ava { width: 64px; height: 64px; font-size: 30px; }
+    .pc { grid-template-columns: 84px minmax(0, 1fr); }
+    .pc__ava { width: 84px; height: 100px; }
     .pc__kpi { grid-column: 1 / -1; }
     .pc__kpi div { flex: 1; max-width: none; }
     .path__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .hltv__row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {
-    .lessons { grid-template-columns: minmax(0, 1fr); }
+    .lessons, .ff { grid-template-columns: minmax(0, 1fr); }
     .yrs__row { gap: 2px; }
     .yrs__y i { height: 28px; font-size: 13px; }
     .yrs__y span { font-size: 9.5px; }

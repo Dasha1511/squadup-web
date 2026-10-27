@@ -67,6 +67,7 @@ export const EVENTS = {
   faqOpen: 'faqopen', // открыл вопрос FAQ
   emailClick: 'emailclick', // нажал на email в контактах
   articlesClick: 'articlesclick', // нажал плашку «Читать статьи»
+  share: 'share', // поделился статьёй (place = куда)
 } as const;
 
 /** Строка о владельце сайта (ст. 10 149-ФЗ), всегда заканчивается точкой. */

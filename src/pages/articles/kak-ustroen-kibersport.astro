@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import BracketDiagram from '../../components/BracketDiagram.astro';
 import BarChart from '../../components/BarChart.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 import ColumnChart from '../../components/ColumnChart.astro';
 import { SITE, EVENTS } from '../../config/site';
 import { ARTICLES, formatDate } from '../../config/articles';
@@ -136,6 +137,7 @@ const jsonLd = [
       <h1 class="art__title">{a.title}</h1>
       <p class="lead">{a.lead}</p>
       <p class="art__meta muted">{formatDate(a.published)} · {a.readMinutes} минут чтения · Редакция SquadUp</p>
+      <ShareButtons url={url} title={a.title} compact />
       <div class="stats">
         {stats.map(([n, t]) => <div class="stats__i"><b>{n}</b><span>{t}</span></div>)}
       </div>
@@ -325,6 +327,8 @@ const jsonLd = [
             <a href={SITE.telegram} class="btn btn--ghost" target="_blank" rel="noopener" data-track={EVENTS.telegram} data-track-place="article">Новости в Telegram</a>
           </div>
         </div>
+
+        <ShareButtons url={url} title={a.title} />
 
         <h2 id="faq">Частые вопросы</h2>
         <div class="art__faq">
