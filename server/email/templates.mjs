@@ -99,7 +99,7 @@ export function variantA(asset) {
   </td></tr>
   <tr><td align="center" class="px" style="padding:20px 28px 0;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-      ${chip('Dota 2', 'rgba(194,60,42,.18)', '#ff7a66')}${chip('League of Legends', 'rgba(200,170,110,.16)', '#c8aa6e')}${chip('CS2', 'rgba(240,185,11,.16)', '#f0b90b')}
+      ${chip('Dota 2', 'rgba(194,60,42,.18)', '#ff7a66')}${chip('League of Legends', 'rgba(47,111,224,.18)', '#5aa2ff')}${chip('CS2', 'rgba(240,185,11,.16)', '#f0b90b')}
     </tr></table>
   </td></tr>
   <tr><td class="px" style="padding:20px 28px 0;">

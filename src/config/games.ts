@@ -14,7 +14,7 @@ export const GAMES = [
     slug: 'lol',
     code: 'LoL',
     name: 'League of Legends',
-    from: '#C8AA6E', to: '#0A323C', tone: '#C8AA6E',
+    from: '#2F6FE0', to: '#0B2350', tone: '#5AA2FF',
     format: '5 на 5 · до 2 запасных',
     account: 'Riot ID',
     stats: 'Riot API, OP.GG',
