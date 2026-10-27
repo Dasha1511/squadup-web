@@ -12,6 +12,18 @@ export interface ArticleMeta {
 
 export const ARTICLES: ArticleMeta[] = [
   {
+    slug: 'legendy-kibersporta',
+    title: 'Легенды киберспорта: 6 игроков, которые изменили Dota 2, CS и League of Legends',
+    description:
+      'Dendi, N0tail, s1mple, ZywOo, Faker и Deft — истории шести легенд киберспорта: рекорды, титулы, главные моменты карьеры и чему у них поучиться.',
+    lead:
+      'Шесть игроков, без которых киберспорт был бы другим: от первого чемпиона The International до человека, который выиграл Worlds шесть раз. По две легенды на каждую игру.',
+    published: '2026-10-27',
+    updated: '2026-10-27',
+    readMinutes: 11,
+    tags: ['Dota 2', 'CS2', 'League of Legends', 'Игроки'],
+  },
+  {
     slug: 'kak-ustroen-kibersport',
     title: 'Как устроен киберспорт: форматы матчей Bo1, Bo3, Bo5 и турнирные сетки',
     description:

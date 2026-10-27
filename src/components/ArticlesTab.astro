@@ -2,8 +2,9 @@
 // Плашка «Читать статьи», закреплённая у правого края экрана на главной.
 import { BookOpen } from '@lucide/astro';
 import { ARTICLES } from '../config/articles';
+import { EVENTS } from '../config/site';
 ---
-<a href="/articles/" class="atab" data-sq-block="articles-tab" aria-label={`Читать статьи (${ARTICLES.length})`}>
+<a href="/articles/" class="atab" data-sq-block="articles-tab" data-track={EVENTS.articlesClick} data-track-place="side-tab" aria-label={`Читать статьи (${ARTICLES.length})`}>
   <BookOpen size={18} stroke-width={1.75} />
   <span class="atab__t">Читать статьи</span>
 </a>

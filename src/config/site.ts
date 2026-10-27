@@ -66,6 +66,7 @@ export const EVENTS = {
   storeIos: 'storeios', // нажал кнопку App Store
   faqOpen: 'faqopen', // открыл вопрос FAQ
   emailClick: 'emailclick', // нажал на email в контактах
+  articlesClick: 'articlesclick', // нажал плашку «Читать статьи»
 } as const;
 
 /** Строка о владельце сайта (ст. 10 149-ФЗ), всегда заканчивается точкой. */
