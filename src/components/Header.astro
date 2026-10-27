@@ -41,20 +41,32 @@ const path = Astro.url.pathname;
     btn.setAttribute('aria-expanded', String(open));
     btn.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     if (menu) menu.hidden = !open;
+    hdr?.classList.toggle('is-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
+  // Закрываем меню при переходе по ссылке (в том числе по якорю на этой же странице)
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+    if (btn?.getAttribute('aria-expanded') === 'true') btn.click();
+  }));
   const onScroll = () => hdr?.classList.toggle('is-scrolled', window.scrollY > 8);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 </script>
 
 <style>
+  /* Размытие фона вынесено в ::before: backdrop-filter на самой шапке делает её «рамкой» для position: fixed,
+     и мобильное меню получалось нулевой высоты (особенно заметно в Safari на iPhone). */
   .hdr {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(11, 14, 20, .72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid transparent; transition: border-color .2s, background .2s;
+    border-bottom: 1px solid transparent; transition: border-color .2s;
   }
-  .hdr.is-scrolled { border-bottom-color: var(--border); background: rgba(11, 14, 20, .9); }
+  .hdr::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: rgba(11, 14, 20, .72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    transition: background .2s;
+  }
+  .hdr.is-scrolled { border-bottom-color: var(--border); }
+  .hdr.is-scrolled::before, .hdr.is-open::before { background: rgba(11, 14, 20, .96); }
   .hdr__in { display: flex; align-items: center; gap: 24px; height: 72px; }
   .hdr__logo { flex: none; }
   .hdr__nav { display: flex; gap: 4px; margin-left: auto; }
@@ -73,7 +85,7 @@ const path = Astro.url.pathname;
   .hdr__burger[aria-expanded='true'] .i-open { display: none; }
   .hdr__burger[aria-expanded='true'] .i-close { display: block; }
 
-  .mnav { position: fixed; inset: 72px 0 0; background: var(--bg); border-top: 1px solid var(--border); overflow-y: auto; }
+  .mnav { position: fixed; inset: 72px 0 0; z-index: 49; background: var(--bg); border-top: 1px solid var(--border); overflow-y: auto; }
   .mnav__in { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; padding-bottom: 32px; }
   .mnav__link { padding: 16px 4px; font-size: 20px; font-weight: 600; border-bottom: 1px solid var(--border); }
   .mnav .btn { margin-top: 24px; }
