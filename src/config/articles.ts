@@ -20,7 +20,7 @@ export const ARTICLES: ArticleMeta[] = [
       'Разбираем, из чего состоит киберспортивный матч, что значат Bo1, Bo3 и Bo5, как работают сетки на выбывание, швейцарская система и группы — на примерах Dota 2, CS2 и League of Legends.',
     published: '2026-10-27',
     updated: '2026-10-27',
-    readMinutes: 12,
+    readMinutes: 14,
     tags: ['Dota 2', 'CS2', 'League of Legends', 'Турниры'],
   },
 ];
