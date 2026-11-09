@@ -12,6 +12,18 @@ export interface ArticleMeta {
 
 export const ARTICLES: ArticleMeta[] = [
   {
+    slug: 'istorii-nazvanij-v-igrah',
+    title: 'Кто такой Гинсу? Истории имён героев, предметов и оружия в Dota 2, CS2 и League of Legends',
+    description:
+      'В честь кого назван Клинок ярости Гинсу, почему Рошан — это шар для боулинга, что значит AWP и кто придумал Dust II. Истории названий в League of Legends, Dota 2 и CS2.',
+    lead:
+      'Клинок Гинсу, жезл Эула, Трындамир, Рошан, AWP и Dust II: за знакомыми названиями стоят реальные люди и неожиданные истории.',
+    published: '2026-11-10',
+    updated: '2026-11-10',
+    readMinutes: 9,
+    tags: ['League of Legends', 'Dota 2', 'CS2', 'Истории'],
+  },
+  {
     slug: 'legendy-kibersporta',
     title: 'Легенды киберспорта: 6 игроков, которые изменили Dota 2, CS и League of Legends',
     description:

@@ -1,0 +1,331 @@
+---
+import Base from '../../layouts/Base.astro';
+import BarChart from '../../components/BarChart.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import { SITE, EVENTS } from '../../config/site';
+import { ARTICLES, formatDate } from '../../config/articles';
+
+const a = ARTICLES.find((x) => x.slug === 'istorii-nazvanij-v-igrah')!;
+const url = `${SITE.url}/articles/${a.slug}/`;
+
+const toc = [
+  ['guinsoo', 'Главная история: кто такой Гинсу'],
+  ['lol', 'League of Legends: игра имени своих создателей'],
+  ['dota', 'Dota 2: жезл Эула и шар для боулинга'],
+  ['cs', 'CS2: настоящая винтовка и карта-легенда'],
+  ['karta', 'Шпаргалка: кто за каким именем'],
+  ['faq', 'Частые вопросы'],
+];
+
+const stats = [
+  ['2003', 'год, когда моддер Eul сделал первую DotA — карту для Warcraft III'],
+  ['$61 000', 'заплатили в 2018 году за один скин AWP Dragon Lore'],
+  ['5', 'патронов в магазине AWP вместо 10 — главный нерф винтовки за 10 лет'],
+  ['1 апреля', 'день, когда родился и «погиб» ламантин Урф'],
+];
+
+// Путь Guinsoo: от карты для Warcraft III до предметов в двух играх
+const path = [
+  ['2003', 'Eul', 'Моддер Eul выпускает карту Defense of the Ancients для Warcraft III', 'd2'],
+  ['2004–2005', 'Guinsoo', 'Стив «Guinsoo» Фик развивает версию DotA Allstars: рецепты предметов и босс Рошан', 'd2'],
+  ['2005', 'IceFrog', 'Guinsoo передаёт карту IceFrog — тот позже сделает Dota 2 в Valve', 'd2'],
+  ['2009', 'League of Legends', 'Guinsoo уже гейм-дизайнер Riot Games. В игре появляется «Клинок ярости Гинсу»', 'lol'],
+  ['Dota 2', 'Scythe of Vyse', 'В Dota 2 его имя из названия посоха убрали — он ведь работал у конкурента', 'd2'],
+];
+
+const blade = [
+  ['2009', 'Появляется перед самым релизом игры', 'Скорость атаки и сила умений растут с каждым ударом'],
+  ['2016', 'Патч 6.9: «Ярость Гинсу»', 'Каждая вторая атака наносит призрачный удар — эффекты при попадании срабатывают дважды'],
+  ['2020', 'Патч 10.23: версия на крит', 'Шанс крита превращается в урон при попадании'],
+  ['2024', 'Патч 14.1: нынешний вид', 'Заряды копятся, а потом включают призрачные удары'],
+];
+
+const names = [
+  ['lol', 'Tryndamere', 'Марк Меррилл', 'Сооснователь Riot Games. Трындамир — ник его персонажа в EverQuest'],
+  ['lol', 'Ashe', 'Эшли Меррилл', 'Жена Марка Меррилла. В игре Эш и Трындамир тоже женаты'],
+  ['lol', 'Ryze', 'Брэндон Бек', 'Второй сооснователь Riot Games, его ник — Ryze'],
+  ['lol', 'Zilean', 'Том «Zileas» Кэдвелл', 'Один из первых дизайнеров League of Legends'],
+  ['lol', 'Guinsoo’s Rageblade', 'Стив «Guinsoo» Фик', 'Автор DotA Allstars и гейм-дизайнер Riot'],
+  ['d2', 'Eul’s Scepter of Divinity', 'Eul', 'Автор самой первой карты DotA'],
+  ['d2', 'Roshan', 'шар для боулинга', 'По известной истории, Guinsoo назвал босса в честь своего шара'],
+  ['cs', 'AWP', 'Arctic Warfare Police', 'Настоящая британская винтовка компании Accuracy International'],
+  ['cs', 'Dust II', 'Дэвид Джонстон', 'Автор сам хотел назвать карту Dust 3'],
+];
+
+const awp = [
+  ['Основа', 'Британская винтовка Arctic Warfare', 'В первых версиях игры называлась «Magnum Sniper Rifle»'],
+  ['2015', 'Замедление в прицеле', 'Valve ограничила скорость движения с открытым прицелом'],
+  ['2022', 'Магазин: 10 → 5 патронов', 'Самый большой нерф AWP с выхода CS:GO в 2012 году'],
+];
+
+const faq = [
+  ['В честь кого назван Клинок ярости Гинсу?', 'В честь Стива «Guinsoo» Фика. Он развивал карту DotA Allstars для Warcraft III, а потом стал гейм-дизайнером Riot Games и одним из создателей League of Legends. Киберспортсменом он не был.'],
+  ['Почему в Dota 2 посох называется Scythe of Vyse, а не Guinsoo’s Scythe?', 'В оригинальной DotA Allstars предмет назывался Guinsoo’s Scythe of Vyse. К выходу Dota 2 его автор уже работал в Riot Games над League of Legends, и имя из названия убрали.'],
+  ['Что значит AWP в Counter-Strike?', 'AWP — это Arctic Warfare Police, полицейская версия снайперской винтовки британской компании Accuracy International. В игре она известна правилом «один выстрел — одно убийство».'],
+  ['Какой чемпион League of Legends назван в честь основателя Riot?', 'Сразу два: Трындамир назван по игровому нику сооснователя Марка Меррилла, а Райз — по нику второго сооснователя Брэндона Бека. Эш названа в честь жены Меррилла, Эшли.'],
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.description,
+    datePublished: a.published, dateModified: a.updated, inLanguage: 'ru', mainEntityOfPage: url,
+    image: `${SITE.url}/og.png`,
+    author: { '@type': 'Organization', name: 'SquadUp', url: SITE.url },
+    publisher: { '@type': 'Organization', name: 'SquadUp', logo: { '@type': 'ImageObject', url: `${SITE.url}/icon-512.png` } },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faq.map(([q, ans]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: ans } })),
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Статьи', item: `${SITE.url}/articles/` },
+      { '@type': 'ListItem', position: 3, name: 'Истории названий в играх', item: url },
+    ],
+  },
+];
+---
+<Base title="Кто такой Гинсу? Истории имён героев, предметов и оружия в играх" description={a.description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="art" data-sq-block="article">
+    <header class="art__head wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> / <a href="/articles/">Статьи</a></nav>
+      <div class="art__tags">{a.tags.map((t) => <span class="chip">{t}</span>)}</div>
+      <h1 class="art__title">{a.title}</h1>
+      <p class="lead">{a.lead}</p>
+      <p class="art__meta muted">{formatDate(a.published)} · {a.readMinutes} минут чтения · Редакция SquadUp</p>
+      <ShareButtons url={url} title={a.title} compact />
+      <div class="stats">
+        {stats.map(([n, t]) => <div class="stats__i"><b>{n}</b><span>{t}</span></div>)}
+      </div>
+    </header>
+
+    <div class="wrap art__grid">
+      <aside class="art__toc" data-sq-block="article-toc">
+        <span class="caps">Содержание</span>
+        <ol>{toc.map(([id, t]) => <li><a href={`#${id}`}>{t}</a></li>)}</ol>
+      </aside>
+
+      <div class="prose art__body">
+        <p class="hook">Вы тысячу раз покупали «Гинсу», кидали «Еул» и брали AWP — но задумывались, откуда эти названия? За многими из них стоят реальные люди: моддеры, основатели студий, чья-то жена и даже шар для боулинга. Рассказываем самые интересные истории имён в трёх играх.</p>
+
+        <h2 id="guinsoo">Главная история: кто такой Гинсу</h2>
+        <p>«Клинок ярости Гинсу» — один из самых узнаваемых предметов League of Legends. Многие думают, что Гинсу — это персонаж из лора или киберспортсмен. На самом деле это ник живого человека: <strong>Стива «Guinsoo» Фика</strong>, и его история связывает сразу две главные MOBA-игры мира.</p>
+        <p>В начале 2000-х Фик был обычным игроком Warcraft III, который увлёкся пользовательской картой Defense of the Ancients. Первую версию сделал моддер Eul, а Guinsoo взялся развивать её вариант — DotA Allstars. Именно он придумал две вещи, без которых жанр сегодня не представить: <strong>рецепты предметов</strong>, когда из простых вещей собираются сильные, и <strong>Рошана</strong> — босса, которого можно убить только всей командой.</p>
+        <ol class="pathl">
+          {path.map(([y, who, t, g]) => (
+            <li class={`pathl__i pathl__i--${g}`}><span class="pathl__y">{y}</span><b>{who}</b><span class="pathl__t">{t}</span></li>
+          ))}
+        </ol>
+        <p>Как тогда было принято у моддеров, Guinsoo оставил в карте автограф — предмет <strong>Guinsoo’s Scythe of Vyse</strong>, посох, превращающий врага в безобидное животное. В 2005 году он передал карту IceFrog, а сам позже оказался в молодой студии Riot Games, где помогал придумывать первых чемпионов League of Legends.</p>
+        <p>Так его имя попало во вторую игру: незадолго до релиза в 2009 году в League of Legends появился Guinsoo’s Rageblade. А дальше случилась забавная развилка. Когда Valve делала Dota 2, посох туда перенесли, но имя убрали: теперь это просто Scythe of Vyse. Автор-то к тому времени работал у главного конкурента.</p>
+        <aside class="fact"><span class="fact__k">Знали ли вы?</span> Предмет менялся столько раз, что стал мемом: его переделывали под магов, под стрелков, под криты и обратно. Неизменной осталась только идея — чем дольше бьёшь, тем страшнее становишься.</aside>
+        <figure class="tlx">
+          <figcaption>Как менялся Клинок ярости Гинсу</figcaption>
+          <div class="tlx__row">
+            {blade.map(([y, h, d]) => (
+              <div class="tlx__i"><span class="tlx__y">{y}</span><b>{h}</b><p>{d}</p></div>
+            ))}
+          </div>
+        </figure>
+
+        <!-- LOL -->
+        <div class="gsec gsec--lol" id="lol"><span>League of Legends</span><h2>Игра имени своих создателей</h2></div>
+        <p>Guinsoo — не единственный сотрудник Riot, увековеченный в игре. В ранние годы студия была маленькой, и разработчики щедро раздавали чемпионам собственные ники.</p>
+        <div class="nm">
+          <div class="nm__c"><span class="nm__k">Чемпион</span><b>Tryndamere</b><p>Король варваров носит ник сооснователя Riot <strong>Марка Меррилла</strong> — так звали его персонажа в EverQuest.</p></div>
+          <div class="nm__c"><span class="nm__k">Чемпион</span><b>Ashe</b><p>Ледяная лучница названа в честь жены Меррилла, <strong>Эшли</strong>. В лоре игры Эш и Трындамир — супруги, как и в жизни.</p></div>
+          <div class="nm__c"><span class="nm__k">Чемпион</span><b>Ryze</b><p>Синий маг получил ник второго сооснователя студии, <strong>Брэндона «Ryze» Бека</strong>.</p></div>
+          <div class="nm__c"><span class="nm__k">Чемпион</span><b>Zilean</b><p>Хранитель времени — это <strong>Том «Zileas» Кэдвелл</strong>, один из первых дизайнеров игры.</p></div>
+        </div>
+        <aside class="fact fact--gold"><span class="fact__k">Энни и Тибберс</span> По одной из известных версий, Энни назвали в честь девушки дизайнера Riot, а плюшевого медведя Тибберса — в честь её настоящей игрушки.</aside>
+        <h3>Урф: чемпион, которого не было</h3>
+        <p>1 апреля 2010 года Riot анонсировала нового чемпиона — ламантина Урфа с лопаткой для жарки. Игроки ждали, но это была шутка: «оказалось», что Урфа погубил Варвик. В память о нём вышел скин, где оборотень носит шкуру ламантина.</p>
+        <p>Шутка пережила всех. В 2014 году, снова 1 апреля, появился режим <strong>URF — Ultra Rapid Fire</strong>: почти без перезарядок и без маны. Название — привет тому самому ламантину, а сам режим стал одним из самых любимых в игре. Лопатка Урфа с тех пор кочует по разным режимам как пасхалка.</p>
+
+        <!-- DOTA -->
+        <div class="gsec gsec--d2" id="dota"><span>Dota 2</span><h2>Жезл Эула и шар для боулинга</h2></div>
+        <p>В Dota 2 сохранилась та же традиция моддеров Warcraft III — оставлять автограф в названии предмета.</p>
+        <p><strong>Eul’s Scepter of Divinity</strong> — жезл, поднимающий цель в вихре, — назван в честь Eul, автора самой первой DotA. В отличие от Guinsoo, его имя в Dota 2 осталось: Eul работает в Valve. Так два предмета двух авторов одной карты разошлись по двум играм-конкурентам.</p>
+        <div class="split">
+          <div class="split__top"><b>DotA Allstars</b><span>карта для Warcraft III</span></div>
+          <div class="split__arms">
+            <div class="split__a split__a--d2"><span>Dota 2 · Valve</span><b>Eul’s Scepter</b><p>имя автора сохранили</p><b>Scythe of Vyse</b><p>имя Guinsoo убрали</p></div>
+            <div class="split__a split__a--lol"><span>League of Legends · Riot</span><b>Guinsoo’s Rageblade</b><p>имя автора — в названии</p><b>Рецепты предметов</b><p>идея Guinsoo живёт в обеих играх</p></div>
+          </div>
+        </div>
+        <p>А самая забавная история — у <strong>Рошана</strong>. Грозного босса, за убийство которого дают Аегис, Guinsoo, как гласит известная история, назвал в честь своего шара для боулинга. Так что каждый раз, когда комментатор кричит «Рошан пал!», где-то падают кегли.</p>
+        <aside class="fact"><span class="fact__k">Почему имена меняли</span> Оригинальная DotA была полна названий из вселенной Warcraft, права на которую принадлежат Blizzard. Переезжая в Dota 2, Valve переименовала героев и предметы: Windrunner стала Windranger, Necrolyte — Necrophos, а Lothar’s Edge — Shadow Blade.</aside>
+
+        <!-- CS -->
+        <div class="gsec gsec--cs" id="cs"><span>Counter-Strike 2</span><h2>Настоящая винтовка и карта-легенда</h2></div>
+        <h3>AWP: винтовка для арктических морозов</h3>
+        <p>В Counter-Strike нет выдуманных героев, зато у оружия есть реальные прототипы. AWP расшифровывается как <strong>Arctic Warfare Police</strong> — это полицейская версия снайперской винтовки британской компании Accuracy International. Серию Arctic Warfare создавали так, чтобы она не отказывала на сильном морозе.</p>
+        <p>В игре «слон», как его зовут русскоязычные игроки, стал символом серии: один выстрел в корпус — одно убийство. Из-за этого его приходится постоянно сдерживать.</p>
+        <div class="tlx__row tlx__row--3">
+          {awp.map(([y, h, d]) => (
+            <div class="tlx__i tlx__i--cs"><span class="tlx__y">{y}</span><b>{h}</b><p>{d}</p></div>
+          ))}
+        </div>
+        <h3>Dragon Lore: рисунок дороже автомобиля</h3>
+        <p>Самый знаменитый скин в истории CS — AWP Dragon Lore из коллекции Cobblestone, появившейся в 2014 году. Сувенирная версия выпадала только зрителям матчей на карте Cobblestone во время Мейджоров и была там самым редким предметом.</p>
+        <BarChart
+          title="Цена одной сувенирной AWP Dragon Lore"
+          rows={[
+            { label: 'Цена покупки', sub: 'коллекционер Drone', values: [35000], display: ['$35 000'] },
+            { label: 'Цена продажи', sub: 'январь 2018', values: [61000], display: ['$61 000+'], hl: true },
+          ]}
+          max={61000}
+          caption="Скин в состоянии «прямо с завода» с автографом Skadoodle — лучшего игрока Мейджора в Бостоне. Его продали на следующий день после победы Cloud9."
+        />
+        <p>Почему так дорого? Автограф поставил лучший игрок Мейджора, а сам скин больше не добыть: в 2018 году Cobblestone убрали из соревновательного набора карт, и новые сувенирные наборы с неё не выпадают.</p>
+        <h3>Dust II: карта, которую автор стеснялся</h3>
+        <p>Самую известную карту в истории шутеров придумал британец <strong>Дэвид Джонстон</strong>. Первую Dust он сделал, вдохновившись ранними скриншотами Team Fortress 2 — игры, которая тогда даже не вышла. Текстуры в похожем стиле ему нарисовал художник Крис Эштон.</p>
+        <p>Продолжение вышло в марте 2001 года. Джонстон считал, что оно не дотягивает до оригинала, и хотел назвать карту <strong>Dust 3</strong> — чтобы место «настоящей второй части» осталось свободным. Перед релизом её всё же переименовали в Dust II. История рассудила иначе: вторую Dust знают даже те, кто никогда не играл в CS.</p>
+        <aside class="fact fact--gold"><span class="fact__k">Вечное возвращение</span> Dust II дважды убирали из соревновательного набора карт — в 2017 и 2022 годах — и дважды возвращали: в 2018-м и 2024-м.</aside>
+
+        <!-- ШПАРГАЛКА -->
+        <h2 id="karta">Шпаргалка: кто за каким именем</h2>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Название в игре</th><th>В честь кого или чего</th><th>Кто это</th></tr></thead>
+            <tbody>
+              {names.map(([g, n, who, what]) => (
+                <tr><td><i class={`dot dot--${g}`} />{n}</td><td>{who}</td><td>{what}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cta-box">
+          <h2>Своё имя в игре начинается с команды</h2>
+          <p>Eul и Guinsoo начинали как обычные игроки, которым было интересно играть вместе с другими. В <a href="/features/">SquadUp</a> можно найти тиммейтов по роли и рангу в Dota 2, CS2 и League of Legends, собрать команду и сыграть турнир.</p>
+          <div class="art__cta">
+            <a href="/download/" class="btn btn--primary" data-track={EVENTS.notifyClick} data-track-place="article-names">Узнать о запуске</a>
+            <a href="/articles/legendy-kibersporta/" class="btn btn--ghost">Легенды киберспорта</a>
+          </div>
+        </div>
+
+        <ShareButtons url={url} title={a.title} />
+
+        <h2 id="faq">Частые вопросы</h2>
+        <div class="art__faq">
+          {faq.map(([q, ans]) => (
+            <details class="art__q"><summary>{q}</summary><p>{ans}</p></details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .art__head { padding-top: 48px; padding-bottom: 12px; max-width: 980px; }
+  .crumbs { font-size: 14px; color: var(--text-2); }
+  .crumbs a { color: var(--text-2); }
+  .crumbs a:hover { color: var(--text); }
+  .art__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .art__title { font-size: clamp(30px, 4.4vw, 48px); line-height: 1.12; letter-spacing: -0.02em; margin: 18px 0 0; text-wrap: balance; }
+  .art__meta { margin-top: 16px; font-size: 14px; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+  .stats__i { background: linear-gradient(160deg, rgba(124, 92, 255, .18), rgba(34, 211, 238, .06)); border: 1px solid rgba(124, 92, 255, .3); border-radius: var(--r-tile); padding: 16px; }
+  .stats__i b { display: block; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; color: #fff; letter-spacing: -0.02em; }
+  .stats__i span { display: block; margin-top: 6px; font-size: 13px; line-height: 1.35; color: var(--text-2); }
+  .art__grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; padding-top: 24px; padding-bottom: 72px; align-items: start; }
+  .art__toc { position: sticky; top: 96px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); padding: 18px 18px 8px; }
+  .art__toc ol { margin: 12px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.45; }
+  .art__toc li { margin-bottom: 10px; color: var(--text-2); }
+  .art__toc a { color: var(--text-2); text-decoration: none; }
+  .art__toc a:hover { color: var(--text); }
+  .art__body { max-width: 780px; }
+  .art__body :global(h2) { scroll-margin-top: 96px; font-size: 26px; line-height: 1.25; margin-top: 52px; }
+  .hook { font-size: 19px; line-height: 1.6; color: #e6e9f0 !important; margin-top: 0; }
+  .gsec { scroll-margin-top: 96px; margin: 56px 0 20px; padding: 22px 22px 20px; border-radius: var(--r-card); border: 1px solid; }
+  .gsec span { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .art__body .gsec h2 { margin: 6px 0 0; }
+  .gsec--d2 { background: linear-gradient(135deg, rgba(194, 60, 42, .45), rgba(122, 31, 20, .15)); border-color: rgba(255, 90, 69, .4); }
+  .gsec--d2 span { color: #ff8a78; }
+  .gsec--cs { background: linear-gradient(135deg, rgba(240, 185, 11, .32), rgba(58, 42, 10, .2)); border-color: rgba(240, 185, 11, .4); }
+  .gsec--cs span { color: #f0b90b; }
+  .gsec--lol { background: linear-gradient(135deg, rgba(47, 111, 224, .45), rgba(11, 35, 80, .2)); border-color: rgba(90, 162, 255, .4); }
+  .gsec--lol span { color: #8cc0ff; }
+  .fact { margin: 22px 0; padding: 16px 18px 16px 20px; border-left: 4px solid var(--cyan); background: rgba(34, 211, 238, .06); border-radius: 0 var(--r-tile) var(--r-tile) 0; color: #cfe9ee; }
+  .fact__k { display: block; font-weight: 700; color: var(--cyan); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .fact--gold { border-left-color: #f0b90b; background: rgba(240, 185, 11, .07); color: #eee2b8; }
+  .fact--gold .fact__k { color: #f0b90b; }
+  .art__body .path__i { margin: 0; padding: 10px 6px; border-radius: 10px; text-align: center; background: var(--surface-2); border: 1px solid var(--border); position: relative; }
+  .cta-box { margin: 52px 0 8px; padding: 26px; border-radius: var(--r-card); background: linear-gradient(135deg, rgba(124, 92, 255, .25), rgba(34, 211, 238, .08)); border: 1px solid rgba(124, 92, 255, .45); }
+  .art__body .cta-box h2 { margin-top: 0; }
+  .art__cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 0; }
+  .art__cta .btn { text-decoration: none; color: #fff; }
+  .art__faq { display: flex; flex-direction: column; gap: 10px; }
+  .art__q { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); padding: 16px 18px; }
+  .art__q summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  .art__q p { margin: 10px 0 0; }
+
+  .art__body h3 { font-size: 19px; margin: 30px 0 8px; color: var(--text); }
+
+  .pathl { list-style: none; padding: 0; margin: 22px 0; position: relative; }
+  .pathl::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(#ff5a45, #5aa2ff); }
+  .art__body .pathl__i { position: relative; margin: 0; padding: 0 0 18px 32px; display: grid; grid-template-columns: 110px minmax(0, 1fr); column-gap: 14px; }
+  .pathl__i::before { content: ''; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid #ff5a45; box-sizing: border-box; }
+  .pathl__i--lol::before { border-color: #5aa2ff; }
+  .pathl__y { grid-row: span 2; font-size: 13px; font-weight: 700; color: var(--text-2); padding-top: 2px; }
+  .pathl__i b { color: #fff; }
+  .pathl__t { font-size: 14px; color: var(--text-2); }
+
+  .tlx { margin: 22px 0 26px; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); }
+  .tlx figcaption { font-weight: 700; color: var(--text); font-size: 17px; margin-bottom: 14px; }
+  .tlx__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .tlx__row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 20px 0; }
+  .tlx__i { padding: 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); border-top: 3px solid #5aa2ff; }
+  .tlx__i--cs { border-top-color: var(--cs-tone); background: var(--surface); }
+  .tlx__y { display: block; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+  .tlx__i b { display: block; margin-top: 6px; font-size: 14px; line-height: 1.3; color: #d5dae3; }
+  .tlx__i p { margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: var(--text-2); }
+
+  .nm { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+  .nm__c { padding: 16px; border-radius: var(--r-tile); border: 1px solid rgba(90, 162, 255, .3); background: linear-gradient(150deg, rgba(47, 111, 224, .22), var(--surface) 60%); }
+  .nm__k { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #8cc0ff; }
+  .nm__c b { display: block; font-size: 22px; color: #fff; margin-top: 2px; }
+  .nm__c p { margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
+
+  .split { margin: 22px 0; }
+  .split__top { text-align: center; padding: 14px; border-radius: var(--r-tile); background: var(--surface); border: 1px solid var(--border); position: relative; }
+  .split__top b { display: block; color: #fff; font-size: 17px; }
+  .split__top span { font-size: 13px; color: var(--text-2); }
+  .split__top::after { content: ''; position: absolute; left: 50%; bottom: -15px; width: 2px; height: 14px; background: var(--border); }
+  .split__arms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .split__a { padding: 16px; border-radius: var(--r-tile); border: 1px solid; }
+  .split__a span { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .split__a b { display: block; color: #fff; margin-top: 10px; }
+  .split__a p { margin: 2px 0 0; font-size: 13.5px; }
+  .split__a--d2 { background: linear-gradient(150deg, rgba(194, 60, 42, .26), var(--surface) 65%); border-color: rgba(255, 90, 69, .35); }
+  .split__a--d2 span { color: #ff8a78; }
+  .split__a--lol { background: linear-gradient(150deg, rgba(47, 111, 224, .26), var(--surface) 65%); border-color: rgba(90, 162, 255, .35); }
+  .split__a--lol span { color: #8cc0ff; }
+
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--border); border-radius: var(--r-tile); }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 560px; }
+  .tbl th { text-align: left; padding: 12px 14px; background: var(--surface-2); color: var(--text); font-weight: 600; }
+  .tbl td { padding: 12px 14px; border-top: 1px solid var(--border); vertical-align: top; }
+  .tbl td:first-child { color: #fff; font-weight: 600; white-space: nowrap; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+  .dot--d2 { background: #ff5a45; } .dot--lol { background: #5aa2ff; } .dot--cs { background: var(--cs-tone); }
+
+  @media (max-width: 960px) {
+    .art__grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .art__toc { position: static; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tlx__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .nm, .split__arms, .tlx__row--3 { grid-template-columns: minmax(0, 1fr); }
+    .art__body .pathl__i { grid-template-columns: minmax(0, 1fr); }
+    .pathl__y { grid-row: auto; }
+    .hook { font-size: 17px; }
+  }
+</style>
