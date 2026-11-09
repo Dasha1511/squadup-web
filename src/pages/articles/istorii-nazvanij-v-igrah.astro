@@ -144,10 +144,6 @@ const jsonLd = [
         <aside class="fact fact--gold"><span class="fact__k">Энни и Тибберс</span> По одной из известных версий, Энни назвали в честь девушки дизайнера Riot, а плюшевого медведя Тибберса — в честь её настоящей игрушки.</aside>
         <h3>Урф: чемпион, которого не было</h3>
         <p>1 апреля 2010 года Riot анонсировала нового чемпиона — ламантина Урфа с лопаткой для жарки. Игроки ждали, но это была шутка: «оказалось», что Урфа погубил Варвик. В память о нём вышел скин, где оборотень носит шкуру ламантина.</p>
-        <figure class="pic">
-          <img src="/articles/urf-manatee.webp" alt="Ламантин под водой смотрит в камеру" width="432" height="243" loading="lazy" decoding="async" />
-          <figcaption><span class="pic__t">Настоящий ламантин. Лопатку для жарки ему, к сожалению, не выдали</span><span class="pic__c">Фото: <a href="https://commons.wikimedia.org/wiki/File:Close_up_image_of_manatee_underwater.jpg" target="_blank" rel="noopener nofollow">Ryan Hagerty, USFWS</a>, общественное достояние, кадрировано</span></figcaption>
-        </figure>
         <p>Шутка пережила всех. В 2014 году, снова 1 апреля, появился режим <strong>URF — Ultra Rapid Fire</strong>: почти без перезарядок и без маны. Название — привет тому самому ламантину, а сам режим стал одним из самых любимых в игре. Лопатка Урфа с тех пор кочует по разным режимам как пасхалка.</p>
 
         <!-- DOTA -->
@@ -162,20 +158,12 @@ const jsonLd = [
           </div>
         </div>
         <p>А самая забавная история — у <strong>Рошана</strong>. Грозного босса, за убийство которого дают Аегис, Guinsoo, как гласит известная история, назвал в честь своего шара для боулинга. Так что каждый раз, когда комментатор кричит «Рошан пал!», где-то падают кегли.</p>
-        <figure class="pic">
-          <img src="/articles/roshan-bowling.webp" alt="Шар для боулинга летит в кегли" width="432" height="243" loading="lazy" decoding="async" />
-          <figcaption><span class="pic__t">Так выглядит тёзка Рошана за работой. Аегис из кеглей не выпадает</span><span class="pic__c">Иллюстрация: <a href="https://commons.wikimedia.org/wiki/File:Bowling_ball_and_pins_for_strike_-_front_view.jpg" target="_blank" rel="noopener nofollow">RCraig09</a>, CC BY-SA 4.0, кадрировано</span></figcaption>
-        </figure>
         <aside class="fact"><span class="fact__k">Почему имена меняли</span> Оригинальная DotA была полна названий из вселенной Warcraft, права на которую принадлежат Blizzard. Переезжая в Dota 2, Valve переименовала героев и предметы: Windrunner стала Windranger, Necrolyte — Necrophos, а Lothar’s Edge — Shadow Blade.</aside>
 
         <!-- CS -->
         <div class="gsec gsec--cs" id="cs"><span>Counter-Strike 2</span><h2>Настоящая винтовка и карта-легенда</h2></div>
         <h3>AWP: винтовка для арктических морозов</h3>
         <p>В Counter-Strike нет выдуманных героев, зато у оружия есть реальные прототипы. AWP расшифровывается как <strong>Arctic Warfare Police</strong> — это полицейская версия снайперской винтовки британской компании Accuracy International. Серию Arctic Warfare создавали так, чтобы она не отказывала на сильном морозе.</p>
-        <figure class="pic">
-          <img src="/articles/awp-rifle.webp" alt="Настоящая снайперская винтовка Arctic Warfare Police" width="432" height="243" loading="lazy" decoding="async" />
-          <figcaption><span class="pic__t">Та самая AWP в жизни: зелёная, как в игре, но без скина с драконом</span><span class="pic__c">Фото: <a href="https://commons.wikimedia.org/wiki/File:Arctic_Warfare_Police_Model.jpg" target="_blank" rel="noopener nofollow">MaXwell</a>, CC BY-SA 3.0, кадрировано</span></figcaption>
-        </figure>
         <p>В игре «слон», как его зовут русскоязычные игроки, стал символом серии: один выстрел в корпус — одно убийство. Из-за этого его приходится постоянно сдерживать.</p>
         <div class="tlx__row tlx__row--3">
           {awp.map(([y, h, d]) => (
@@ -289,12 +277,6 @@ const jsonLd = [
   .pathl__i b { color: #fff; }
   .pathl__t { font-size: 14px; color: var(--text-2); }
 
-  .pic { margin: 22px 0 26px; border-radius: var(--r-tile); overflow: hidden; border: 1px solid var(--border); background: var(--surface); max-width: 560px; }
-  .pic img { display: block; width: 100%; height: auto; }
-  .pic figcaption { padding: 12px 16px 14px; display: grid; gap: 4px; }
-  .pic__t { color: var(--text); font-size: 15px; line-height: 1.45; }
-  .pic__c { color: var(--text-3, var(--text-2)); font-size: 12px; }
-  .pic__c a { color: inherit; text-decoration: underline; }
   .tlx { margin: 22px 0 26px; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-tile); }
   .tlx figcaption { font-weight: 700; color: var(--text); font-size: 17px; margin-bottom: 14px; }
   .tlx__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
